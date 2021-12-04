@@ -7,7 +7,10 @@ const PORT = 3000;
 
 app.use(express.json());
 // statically serve everything in the build folder on the route '/build'
-console.log('Should print MinifiedUglified build:', path.resolve(__dirname, './build'));
+console.log(
+  'Should print MinifiedUglified build:',
+  path.resolve(__dirname, './build')
+);
 app.use('/build', express.static(path.resolve(__dirname, './build')));
 // app.use('/', (req: Request, res: Response) => {
 //   return res.status(200).sendFile(path.join(__dirname, '../client/index.tsx'));
