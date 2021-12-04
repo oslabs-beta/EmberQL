@@ -12,6 +12,7 @@ console.log(
   path.resolve(__dirname, './build')
 );
 app.use('/build', express.static(path.resolve(__dirname, './build')));
+//app.use('/', express.static(path.resolve(__dirname, './client')));
 // app.use('/', (req: Request, res: Response) => {
 //   return res.status(200).sendFile(path.join(__dirname, '../client/index.tsx'));
 // });
