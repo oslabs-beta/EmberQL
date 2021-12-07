@@ -50,6 +50,7 @@
     "dotenv": "^8.2.0",
     "eslint-plugin-import": "^2.25.3",
     "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
     "graphiql": "^1.4.0",
     "graphql": "^15.7.2",
     "mini-css-extract-plugin": "^2.4.5",
@@ -81,19 +82,19 @@
     "eslint-plugin-react": "^7.27.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "file-loader": "^6.1.0",
+    "graphiql": "^1.4.0",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^26.4.2",
     "nodemon": "^2.0.4",
+    "style-loader": "^1.2.1",
+    "ts-loader": "^9.2.6",
+    "ts-node": "^10.4.0",
     "typescript": "^4.5.2",
     "webpack": "^5.64.1",
     "webpack-cli": "^4.9.1",
     "webpack-dev-middleware": "^5.2.2",
     "webpack-dev-server": "^3.11.2",
-    "webpack-hot-middleware": "^2.25.1",
-    "graphiql": "^1.4.0",
-    "style-loader": "^1.2.1",
-    "ts-loader": "^9.2.6",
-    "ts-node": "^10.4.0"
+    "webpack-hot-middleware": "^2.25.1"
   },
   "bugs": {
     "url": "https://github.com/oslabs-beta/EmberQL/issues"
