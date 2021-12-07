@@ -148,11 +148,29 @@ const RootMutation = new GraphQLObjectType({
         genre: { type: GraphQLString },
       },
       async resolve(parent, args) {
+        const author = await db.query(
+          `SELECT id FROM authors WHERE name = '${args.author}'`
+        );
+        const genre = await db.query(
+          `SELECT id FROM genres WHERE genres.name = '${args.genre}'`
+        );
+        const authorID = author.rows[0].id;
+        const genreID = genre.rows[0].id;
         const queryString = `
-        INSERT INTO books
+        INSERT INTO books (title, genre_id)
+        VALUES ($1, $2)
+        RETURNING *`;
+        const bookResponse = await db.query(queryString, [args.title, genreID]);
+        const newBook = bookResponse.rows[0];
+        newBook.author = args.author;
+        newBook.genre = args.genre;
+        const bookID = newBook.id;
+        const joinTableQueryString = `
+        INSERT INTO booksauthors (bookid, authorid)
+        VALUES ($1, $2)
         `;
-        const newBook = db.query('');
-        return newBook.rows[0];
+        await db.query(joinTableQueryString, [bookID, authorID]);
+        return newBook;
       },
     },
     //UPDATE BOOK
