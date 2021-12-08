@@ -194,7 +194,23 @@ const RootMutation = new GraphQLObjectType({
         title: { type: GraphQLString },
       },
       async resolve(parent, args) {
-        const deleted = await db.query('');
+        let queryString;
+        if (args.title) {
+          queryString = `
+          DELETE FROM books 
+          WHERE title = '${args.title}'
+          RETURNING *`;
+        }
+        if (args.id) {
+          queryString = `
+          DELETE FROM books 
+          WHERE id = ${args.title}
+          RETURNING *
+          `;
+        }
+        const deleted = await db.query(queryString);
+        const bookID = deleted.rows[0].id;
+        await db.query(`DELETE FROM booksauthors WHERE bookid = ${bookID}`);
         return deleted.rows[0];
       },
     },
@@ -206,7 +222,15 @@ const RootMutation = new GraphQLObjectType({
         country: { type: GraphQLString },
       },
       async resolve(parent, args) {
-        const newAuthor = await db.query('');
+        const queryString = `
+        INSERT INTO authors (name, country)
+        VALUES ($1, $2)
+        RETURNING *
+        `;
+        const newAuthor = await db.query(queryString, [
+          args.name,
+          args.country,
+        ]);
         return newAuthor.rows[0];
       },
     },
@@ -229,7 +253,12 @@ const RootMutation = new GraphQLObjectType({
         name: { type: GraphQLString },
       },
       async resolve(parent, args) {
-        const deletedAuthor = await db.query('');
+        const queryString = `
+        DELETE FROM authors
+        WHERE name = '${args.name}
+        RETURNING *
+        `;
+        const deletedAuthor = await db.query(queryString);
         return deletedAuthor.rows[0];
       },
     },
