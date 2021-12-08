@@ -41,13 +41,13 @@
     "parserOptions": {
       "ecmaVersion": 11,
       "ecmaFeatures": {
-        "modules": true,
+       // "modules": true,
         "jsx": true
       },
       "project": "./tsconfig.json"
     },
     "settings": {
-        "import/extensions": [".js", ".ts", ".tsx"],
+        "import/extensions": [".js","jsx", ".ts", ".tsx"],
         "import/parsers": {
           "@typescript-eslint/parser": [".ts", ".tsx"]
         },

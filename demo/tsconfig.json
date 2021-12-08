@@ -103,7 +103,7 @@
     "jsx": "react",                                      /* Specify JSX code generation: 'preserve', 'react', or 'react-native'. */
     "allowJs": true,                                      /* Allow JavaScript files to be compiled. */
     "moduleResolution": "node",                           /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). "node" means compile to commonJS*/
-   // "noImplicitAny": true,
+    "noImplicitAny": true,
    
   },
   "exclude": ["node_modules"]
