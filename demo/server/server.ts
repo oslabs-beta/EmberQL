@@ -2,7 +2,8 @@
 import path from 'path';
 import express, { Request, Response, NextFunction } from 'express';
 const app = express();
-
+const { graphqlHTTP } = require('express-graphql');
+const schema = require('./schema/schema');
 const PORT = 3000;
 
 app.use(express.json());
@@ -11,6 +12,8 @@ console.log(
   'Should print MinifiedUglified build:',
   path.resolve(__dirname, './build')
 );
+
+app.use('/graphql', graphqlHTTP({ schema, graphiql: true }));
 app.use('/build', express.static(path.resolve(__dirname, './build')));
 //app.use('/', express.static(path.resolve(__dirname, './client')));
 // app.use('/', (req: Request, res: Response) => {
