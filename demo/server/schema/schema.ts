@@ -1,6 +1,4 @@
-const db = require('../models/db.js');
-
-
+import db from '../models/db.js';
 
 import {
   GraphQLSchema,
@@ -21,8 +19,32 @@ const BookType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLID },
     title: { type: GraphQLString },
-    genre: { type: GraphQLString },
-    author: { type: GraphQLString },
+    genre: {
+      type: GenreType,
+      async resolve(parent, args) {
+        const queryString = `
+        SELECT * 
+        FROM genres
+        WHERE id = ${parent.genre_id}
+        `;
+        const genre = await db.query(queryString);
+        return genre.rows[0];
+      },
+    },
+    authors: {
+      type: new GraphQLList(AuthorType),
+      async resolve(parent, args) {
+        const queryString = `
+        SELECT authors.* 
+        FROM ((authors
+        INNER JOIN booksauthors ON booksAuthors.AuthorId = authors.id)
+        INNER JOIN books ON books.id = booksAuthors.BookId)
+        WHERE books.id = ${parent.id}
+        `;
+        const authors = await db.query(queryString);
+        return authors.rows;
+      },
+    },
   }),
 });
 
@@ -32,6 +54,14 @@ const AuthorType = new GraphQLObjectType({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
     country: { type: GraphQLString },
+  }),
+});
+
+const GenreType = new GraphQLObjectType({
+  name: 'Genre',
+  fields: () => ({
+    id: { type: GraphQLID },
+    name: { type: GraphQLString },
   }),
 });
 
@@ -48,12 +78,8 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
       async resolve(parent, args) {
         const queryString = `
-        SELECT books.*, genres.name AS genre, authors.name AS author
-        FROM ((books
-        INNER JOIN  booksAuthors ON books.id = booksAuthors.BookId)
-        INNER JOIN authors ON booksAuthors.AuthorId = authors.id)
-        INNER JOIN genres ON books.genre_id = genres.id
-        WHERE books.id = $1
+        SELECT * FROM books
+        WHERE id = $1
         `;
         const book = await db.query(queryString, [args.id]);
         return book.rows[0];
@@ -64,11 +90,7 @@ const RootQuery = new GraphQLObjectType({
       type: new GraphQLList(BookType),
       async resolve(parent, args) {
         const queryString = `
-        SELECT books.*, genres.name AS genre, authors.name AS author
-        FROM ((books
-        INNER JOIN  booksAuthors ON books.id = booksAuthors.BookId)
-        INNER JOIN authors ON booksAuthors.AuthorId = authors.id)
-        INNER JOIN genres ON books.genre_id = genres.id
+        SELECT * FROM books
         `;
         const books = await db.query(queryString);
         return books.rows;
@@ -103,11 +125,10 @@ const RootQuery = new GraphQLObjectType({
       args: { name: { type: GraphQLString } },
       async resolve(parent, args) {
         const queryString = `
-        SELECT books.*, genres.name AS genre, authors.name AS author
+        SELECT books.*
         FROM ((books
         INNER JOIN  booksAuthors ON books.id = booksAuthors.BookId)
         INNER JOIN authors ON booksAuthors.AuthorId = authors.id)
-        INNER JOIN genres ON books.genre_id = genres.id
         WHERE authors.name = $1
         `;
         const books = await db.query(queryString, [args.name]);
@@ -120,10 +141,8 @@ const RootQuery = new GraphQLObjectType({
       args: { genre: { type: GraphQLString } },
       async resolve(parent, args) {
         const queryString = `
-        SELECT books.*, genres.name AS genre, authors.name AS author
-        FROM ((books
-        INNER JOIN  booksAuthors ON books.id = booksAuthors.BookId)
-        INNER JOIN authors ON booksAuthors.AuthorId = authors.id)
+        SELECT books.*
+        FROM books
         INNER JOIN genres ON books.genre_id = genres.id
         WHERE genres.name = $1
         `;
@@ -257,11 +276,43 @@ const RootMutation = new GraphQLObjectType({
       async resolve(parent, args) {
         const queryString = `
         DELETE FROM authors
-        WHERE name = '${args.name}
+        WHERE name = '${args.name}'
         RETURNING *
         `;
         const deletedAuthor = await db.query(queryString);
         return deletedAuthor.rows[0];
+      },
+    },
+    //ADD AUTHOR
+    addGenre: {
+      type: GenreType,
+      args: {
+        name: { type: GraphQLString },
+      },
+      async resolve(parent, args) {
+        const queryString = `
+        INSERT INTO genres (name)
+        VALUES ($1)
+        RETURNING *
+        `;
+        const newGenre = await db.query(queryString, [args.name]);
+        return newGenre.rows[0];
+      },
+    },
+    //DELETE GENRE
+    deleteGenre: {
+      type: GenreType,
+      args: {
+        name: { type: GraphQLString },
+      },
+      async resolve(parent, args) {
+        const queryString = `
+        DELETE FROM genres
+        WHERE name = '${args.name}'
+        RETURNING *
+        `;
+        const deletedGenre = await db.query(queryString);
+        return deletedGenre.rows[0];
       },
     },
   },
@@ -270,5 +321,5 @@ const RootMutation = new GraphQLObjectType({
 module.exports = new GraphQLSchema({
   query: RootQuery,
   mutation: RootMutation,
-  types: [BookType, AuthorType],
+  types: [BookType, AuthorType, GenreType],
 });
