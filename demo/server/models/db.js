@@ -7,12 +7,13 @@ const pool = new Pool({
   connectionString: PG_URI,
 });
 
-module.exports = {
+const db = {
   query: function (queryString, params, callback) {
     console.log(`Executed query: ${queryString}`);
     return pool.query(queryString, params, callback);
   },
 };
+export default db;
 
 /*
 https://riptutorial.com/sql/example/4978/library-database
