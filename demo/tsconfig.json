@@ -104,9 +104,13 @@
     "allowJs": true,                                      /* Allow JavaScript files to be compiled. */
     "moduleResolution": "node",                           /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). "node" means compile to commonJS*/
     "noImplicitAny": true,
+    //"isolatedModules": true,
    
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "include": ["client/**/*.ts", "server/**/*.ts" ]
+  //include whole project
+ 
 }
 
 // {

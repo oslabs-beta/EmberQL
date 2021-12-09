@@ -1,6 +1,5 @@
-const db = require('../models/db.js');
-
-
+// eslint-disable-next-line import/no-import-module-exports
+import db from '../models/db.js';
 
 import {
   GraphQLSchema,
@@ -156,6 +155,9 @@ const RootMutation = new GraphQLObjectType({
         const genre = await db.query(
           `SELECT id FROM genres WHERE genres.name = '${args.genre}'`
         );
+
+        //const authorId: string = author.rows[0].id;
+        //const genreId: string = genre.rows[0].id;
         const authorID = author.rows[0].id;
         const genreID = genre.rows[0].id;
         const queryString = `
@@ -267,7 +269,7 @@ const RootMutation = new GraphQLObjectType({
   },
 });
 
-module.exports = new GraphQLSchema({
+export default new GraphQLSchema({
   query: RootQuery,
   mutation: RootMutation,
   types: [BookType, AuthorType],

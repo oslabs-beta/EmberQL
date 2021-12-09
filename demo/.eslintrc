@@ -5,7 +5,9 @@
     },
     "rules": {
       "no-console": "error",
-      "import/first": "error",
+      "import/order": "off",
+      "import/first": "off",
+      "import/extensions": "off",
       "react/prop-types": "off",
       "linebreak-style": "off",
       "indentation-style": "off",
@@ -17,7 +19,8 @@
       
       "@typescript-eslint/no-unused-vars": "error",
       "@typescript-eslint/indent": ["warn", 2],
-      "@typescript-eslint/no-useless-constructor": "error"
+      "@typescript-eslint/no-useless-constructor": "error",
+      "@typescript-eslint/no-unsafe-return": "off"
     //   "@typescript-eslint/explicit-function-return-type": "off",
     //   "@typescript-eslint/explicit-member-accessibility": "off",
     //    "@typescript-eslint/prefer-interface": "off",
@@ -25,26 +28,30 @@
       //  "@typescript-eslint/no-empty-interface": "off"
     },
     "extends": [
-       "eslint:recommended",
-      "plugin:react/recommended",
+      // "eslint:recommended",
+       "plugin:react/recommended",
        "plugin:@typescript-eslint/recommended",
-      "plugin:@typescript-eslint/eslint-recommended",
-     // "plugin:react-hooks/recommended",
-      "plugin:@typescript-eslint/recommended-requiring-type-checking",
-      "airbnb",
-      "airbnb-typescript"
+      //"plugin:@typescript-eslint/eslint-recommended",
+       "plugin:react-hooks/recommended",
+      // "plugin:@typescript-eslint/recommended-requiring-type-checking",
+       "airbnb",
+       "airbnb-typescript"
 
     ],
     "parser": "@typescript-eslint/parser",
     "root": true,
-    "plugins": ["react", "@typescript-eslint"],
+    "plugins": ["react", "@typescript-eslint","eslint-plugin-react","eslint-plugin-react-hooks","eslint-plugin-import"],
     "parserOptions": {
+      
       "ecmaVersion": 11,
+      
       "ecmaFeatures": {
-       // "modules": true,
+        "modules": true,
         "jsx": true
       },
-      "project": "./tsconfig.json"
+      "project": "tsconfig.json",
+      //"tsconfigRootDir": "demo",
+      "sourceType": "module"
     },
     "settings": {
         "import/extensions": [".js","jsx", ".ts", ".tsx"],
