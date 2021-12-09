@@ -6,7 +6,6 @@ import {
   GraphQLList,
   GraphQLID,
   GraphQLString,
-  GraphQLInt,
   GraphQLNonNull,
 } from 'graphql';
 
@@ -135,6 +134,15 @@ const RootQuery = new GraphQLObjectType({
         return books.rows;
       },
     },
+    //GET ALL GENRES
+    genres: {
+      type: new GraphQLList(GenreType),
+      async resolve(parent, args) {
+        const queryString = `SELECT * FROM genres`;
+        const genres = await db.query(queryString);
+        return genres.rows;
+      },
+    },
     //GET ALL BOOKS BY GENRE
     booksByGenre: {
       type: new GraphQLList(BookType),
@@ -164,8 +172,8 @@ const RootMutation = new GraphQLObjectType({
     addBook: {
       type: BookType,
       args: {
-        title: { type: GraphQLString },
-        author: { type: GraphQLString },
+        title: { type: new GraphQLNonNull(GraphQLString) },
+        author: { type: new GraphQLNonNull(GraphQLString) },
         genre: { type: GraphQLString },
       },
       async resolve(parent, args) {
@@ -198,11 +206,49 @@ const RootMutation = new GraphQLObjectType({
     updateBook: {
       type: BookType,
       args: {
-        id: { type: GraphQLID },
+        id: { type: new GraphQLNonNull(GraphQLID) },
+        title: { type: GraphQLString },
         author: { type: GraphQLString },
         genre: { type: GraphQLString },
       },
       async resolve(parent, args) {
+        if (args.author) {
+          const authorQueryString = `
+          UPDATE booksauthors
+          SET booksauthors.authorID = authors.id
+          FROM booksauthors 
+          INNER JOIN authors ON booksauthors.authorID = authors.id
+          WHERE booksauthors.bookID = ${args.id} AND authors.name = '${args.author}'
+          `;
+          await db.query(authorQueryString);
+        }
+        let bookQueryString = `
+        SELECT * FROM books 
+        WHERE books.id = ${args.id}
+        RETURNING *`;
+        if (args.genre && args.title) {
+          bookQueryString = `
+          UPDATE books
+          SET books.genre_id = genres.id, books.title = '${args.title}'
+          FROM books
+          INNER JOIN books ON books.genre_id = genres.id
+          WHERE genres.name = '${args.genre}' AND books.id = ${args.id}
+          RETURNING *`;
+        } else if (args.genre) {
+          bookQueryString = `
+          UPDATE books
+          SET books.genre_id = genres.id
+          FROM books
+          INNER JOIN books ON books.genre_id = genres.id
+          WHERE genres.name = '${args.genre}' AND books.id = ${args.id}
+          RETURNING *`;
+        } else if (args.title) {
+          bookQueryString = `
+          UPDATE books
+          SET books.title = '${args.title}'
+          WHERE books.id = ${args.id}
+          RETURNING *`;
+        }
         const updatedBook = await db.query('');
         return updatedBook.rows[0];
       },
@@ -211,27 +257,16 @@ const RootMutation = new GraphQLObjectType({
     deleteBook: {
       type: BookType,
       args: {
-        id: { type: GraphQLID },
-        title: { type: GraphQLString },
+        id: { type: new GraphQLNonNull(GraphQLID) },
       },
       async resolve(parent, args) {
-        let queryString;
-        if (args.title) {
-          queryString = `
+        const queryString = `
           DELETE FROM books 
-          WHERE title = '${args.title}'
-          RETURNING *`;
-        }
-        if (args.id) {
-          queryString = `
-          DELETE FROM books 
-          WHERE id = ${args.title}
+          WHERE id = ${args.id}
           RETURNING *
-          `;
-        }
+        `;
+        await db.query(`DELETE FROM booksauthors WHERE bookid = ${args.id}`);
         const deleted = await db.query(queryString);
-        const bookID = deleted.rows[0].id;
-        await db.query(`DELETE FROM booksauthors WHERE bookid = ${bookID}`);
         return deleted.rows[0];
       },
     },
@@ -239,8 +274,8 @@ const RootMutation = new GraphQLObjectType({
     addAuthor: {
       type: AuthorType,
       args: {
-        name: { type: GraphQLString },
-        country: { type: GraphQLString },
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        country: { type: new GraphQLNonNull(GraphQLString) },
       },
       async resolve(parent, args) {
         const queryString = `
@@ -259,11 +294,21 @@ const RootMutation = new GraphQLObjectType({
     updateAuthor: {
       type: AuthorType,
       args: {
+        id: { type: new GraphQLNonNull(GraphQLID) },
         name: { type: GraphQLString },
         country: { type: GraphQLString },
       },
       async resolve(parent, args) {
-        const updatedAuthor = await db.query('');
+        const toUpdate = [];
+        if (args.name) toUpdate.push(`name='${args.name}'`);
+        if (args.country) toUpdate.push(`country='${args.country}'`);
+        const queryString = `
+        UPDATE authors
+        SET ${toUpdate.join()}
+        WHERE authors.id = ${args.id}
+        RETURNING *
+        `;
+        const updatedAuthor = await db.query(queryString);
         return updatedAuthor.rows[0];
       },
     },
@@ -287,7 +332,7 @@ const RootMutation = new GraphQLObjectType({
     addGenre: {
       type: GenreType,
       args: {
-        name: { type: GraphQLString },
+        name: { type: new GraphQLNonNull(GraphQLString) },
       },
       async resolve(parent, args) {
         const queryString = `
