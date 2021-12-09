@@ -225,31 +225,22 @@ const RootMutation = new GraphQLObjectType({
         let bookQueryString = `
         SELECT * FROM books 
         WHERE books.id = ${args.id}
-        RETURNING *`;
-        if (args.genre && args.title) {
+        `;
+        const toUpdate = [];
+        if (args.genre)
+          toUpdate.push(
+            `genre_id = (SELECT id FROM genres WHERE genres.name = '${args.genre}')`
+          );
+        if (args.title) toUpdate.push(`title = '${args.title}'`);
+        if (toUpdate.length > 0) {
           bookQueryString = `
           UPDATE books
-          SET books.genre_id = genres.id, books.title = '${args.title}'
-          FROM books
-          INNER JOIN books ON books.genre_id = genres.id
-          WHERE genres.name = '${args.genre}' AND books.id = ${args.id}
-          RETURNING *`;
-        } else if (args.genre) {
-          bookQueryString = `
-          UPDATE books
-          SET books.genre_id = genres.id
-          FROM books
-          INNER JOIN books ON books.genre_id = genres.id
-          WHERE genres.name = '${args.genre}' AND books.id = ${args.id}
-          RETURNING *`;
-        } else if (args.title) {
-          bookQueryString = `
-          UPDATE books
-          SET books.title = '${args.title}'
-          WHERE books.id = ${args.id}
-          RETURNING *`;
+          SET ${toUpdate.join()} 
+          WHERE id = ${args.id}
+          RETURNING *
+          `;
         }
-        const updatedBook = await db.query('');
+        const updatedBook = await db.query(bookQueryString);
         return updatedBook.rows[0];
       },
     },
@@ -328,7 +319,7 @@ const RootMutation = new GraphQLObjectType({
         return deletedAuthor.rows[0];
       },
     },
-    //ADD AUTHOR
+    //ADD GENRE
     addGenre: {
       type: GenreType,
       args: {
