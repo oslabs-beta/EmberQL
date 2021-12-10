@@ -6,7 +6,6 @@ const pool = new Pool({
   connectionString: PG_URI,
 });
 
-
 const db = {
   query: function (queryString, params, callback) {
     console.log(`Executed query: ${queryString}`);
