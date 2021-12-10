@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-import-module-exports
 import db from '../models/db.js';
 
 import {
@@ -91,7 +90,7 @@ const RootQuery = new GraphQLObjectType({
     authors: {
       type: new GraphQLList(AuthorType),
       async resolve(parent, args) {
-        const queryString = `SELECT * FROM authors`;
+        const queryString = 'SELECT * FROM authors';
         const authors = await db.query(queryString);
         return authors.rows;
       },
@@ -150,10 +149,10 @@ const RootMutation = new GraphQLObjectType({
       },
       async resolve(parent, args) {
         const author = await db.query(
-          `SELECT id FROM authors WHERE name = '${args.author}'`
+          `SELECT id FROM authors WHERE name = '${args.author}'`,
         );
         const genre = await db.query(
-          `SELECT id FROM genres WHERE genres.name = '${args.genre}'`
+          `SELECT id FROM genres WHERE genres.name = '${args.genre}'`,
         );
 
         //const authorId: string = author.rows[0].id;

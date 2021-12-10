@@ -1,4 +1,3 @@
-
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 //const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -27,21 +26,12 @@ module.exports = {
   module: {
     rules: [
         {
-            test: /\.tsx?$/,
-            exclude: /node_modules/,
-            //use: 'ts-loader',
-            loader: 'ts-loader',
-            // options: {
-            //     presets: ['@babel/preset-typescript']
-            // }
-        },
-        {
-            test: /.(js|jsx)$/,
+            test: /\.(ts|js)x?$/,
             exclude: /node_modules/,
             use: {
             loader: 'babel-loader',
             options: {
-                presets: ['@babel/preset-react', '@babel/preset-env']
+                presets: ['@babel/preset-react', '@babel/preset-env',"@babel/preset-typescript"]
             }},
         },
         {

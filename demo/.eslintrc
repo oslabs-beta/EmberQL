@@ -4,7 +4,7 @@
       "es6": true
     },
     "rules": {
-      "no-console": "error",
+      "no-console": "warn",
       "import/order": "off",
       "import/first": "off",
       "import/extensions": "off",
@@ -13,29 +13,19 @@
       "indentation-style": "off",
       "spaced-comment": "off",
       "no-use-before-define": "warn",
-      //"@typescript-eslint/no-explicit-any": "warn",
-      //"@typescript-eslint/no-implicit-any": "warn",
-      //ongoing issue with eslint and any types. Recommended using tsc for any checks.
       
       "@typescript-eslint/no-unused-vars": "error",
       "@typescript-eslint/indent": ["warn", 2],
       "@typescript-eslint/no-useless-constructor": "error",
-      "@typescript-eslint/no-unsafe-return": "off"
-    //   "@typescript-eslint/explicit-function-return-type": "off",
-    //   "@typescript-eslint/explicit-member-accessibility": "off",
-    //    "@typescript-eslint/prefer-interface": "off",
-    //"@typescript-eslint/no-inferrable-types": "off",
-      //  "@typescript-eslint/no-empty-interface": "off"
+      "@typescript-eslint/no-unsafe-return": "warn"
+  
     },
     "extends": [
-      // "eslint:recommended",
-       "plugin:react/recommended",
-       "plugin:@typescript-eslint/recommended",
-      //"plugin:@typescript-eslint/eslint-recommended",
-       "plugin:react-hooks/recommended",
-      // "plugin:@typescript-eslint/recommended-requiring-type-checking",
-       "airbnb",
-       "airbnb-typescript"
+     
+      "plugin:@typescript-eslint/recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:react-hooks/recommended",
+      "airbnb-typescript"
 
     ],
     "parser": "@typescript-eslint/parser",
@@ -50,7 +40,6 @@
         "jsx": true
       },
       "project": "tsconfig.json",
-      //"tsconfigRootDir": "demo",
       "sourceType": "module"
     },
     "settings": {
@@ -65,9 +54,4 @@
         }
       }
     }
-    /* 
-    no-unsafe-call - forbids calling an expression typed as any
-    no-unsafe-member-access - forbids using any as a member name
-    no-unsafe-argument - forbids passing any as a function parameter
-    no-unsafe-assignment - forbids using any in an assignment
-    */
+ 
