@@ -113,7 +113,7 @@ const RootQuery = new GraphQLObjectType({
     authors: {
       type: new GraphQLList(AuthorType),
       async resolve(parent, args) {
-        const queryString = `SELECT * FROM authors`;
+        const queryString = 'SELECT * FROM authors';
         const authors = await db.query(queryString);
         return authors.rows;
       },
@@ -178,11 +178,14 @@ const RootMutation = new GraphQLObjectType({
       },
       async resolve(parent, args) {
         const author = await db.query(
-          `SELECT id FROM authors WHERE name = '${args.author}'`
+          `SELECT id FROM authors WHERE name = '${args.author}'`,
         );
         const genre = await db.query(
-          `SELECT id FROM genres WHERE genres.name = '${args.genre}'`
+          `SELECT id FROM genres WHERE genres.name = '${args.genre}'`,
         );
+
+        //const authorId: string = author.rows[0].id;
+        //const genreId: string = genre.rows[0].id;
         const authorID = author.rows[0].id;
         const genreID = genre.rows[0].id;
         const queryString = `
@@ -354,7 +357,7 @@ const RootMutation = new GraphQLObjectType({
   },
 });
 
-module.exports = new GraphQLSchema({
+export default new GraphQLSchema({
   query: RootQuery,
   mutation: RootMutation,
   types: [BookType, AuthorType, GenreType],

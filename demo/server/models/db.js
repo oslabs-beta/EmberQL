@@ -1,7 +1,6 @@
 const { Pool } = require('pg');
 
-const PG_URI =
-  'postgres://mvilptfq:W5-KAiYVVKOgDimT4mY4-vbBzJL7pxXz@castor.db.elephantsql.com/mvilptfq';
+const PG_URI ='postgres://mvilptfq:W5-KAiYVVKOgDimT4mY4-vbBzJL7pxXz@castor.db.elephantsql.com/mvilptfq';
 
 const pool = new Pool({
   connectionString: PG_URI,
@@ -14,7 +13,6 @@ const db = {
   },
 };
 export default db;
-
 /*
 https://riptutorial.com/sql/example/4978/library-database
 
