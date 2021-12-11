@@ -138,7 +138,7 @@ const RootQuery = new GraphQLObjectType({
     genres: {
       type: new GraphQLList(GenreType),
       async resolve(parent, args) {
-        const queryString = `SELECT * FROM genres`;
+        const queryString = 'SELECT * FROM genres';
         const genres = await db.query(queryString);
         return genres.rows;
       },
@@ -232,7 +232,7 @@ const RootMutation = new GraphQLObjectType({
         const toUpdate = [];
         if (args.genre)
           toUpdate.push(
-            `genre_id = (SELECT id FROM genres WHERE genres.name = '${args.genre}')`
+            `genre_id = (SELECT id FROM genres WHERE genres.name = '${args.genre}')`,
           );
         if (args.title) toUpdate.push(`title = '${args.title}'`);
         if (toUpdate.length > 0) {
