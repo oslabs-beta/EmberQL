@@ -4,7 +4,10 @@ import express, { Request, Response, NextFunction } from 'express';
 const app = express();
 const { graphqlHTTP } = require('express-graphql');
 const schema = require('./schema/schema');
+import cors from 'cors';
 const PORT = 3000;
+
+app.use(cors());
 
 app.use(express.json());
 // statically serve everything in the build folder on the route '/build'

@@ -1,11 +1,12 @@
 import React from 'react'
 import { render } from 'react-dom';
 import "./styles.css";
+import DemoContainer from './components/DemoContainer'
 
 function App() {
   return (
     <div>
-      <h1>Hello World</h1>
+      <DemoContainer />
     </div>
   );
 }

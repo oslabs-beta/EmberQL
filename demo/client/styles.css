@@ -1,4 +1,40 @@
+* {
+  box-sizing: border-box;
+}
 
+/* Background #082032 */
+/* Blue-Gray Accent #2C394B */
+/* Gray #334756 */
+/* Ember #FF4C29 */
+
+body {
+  background-color: #334756;
+  color: white;
+}
+
+.demo-container {
+  border: 1px black solid;
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100vw;
+}
+
+.graph-container {
+  border: 1px black solid;
+  margin: 50px;
+  flex-grow: 4;
+  padding: 50px;
+  background-color: #082032;
+}
+
+.query-container {
+  border: 1px black solid;
+  margin: 50px;
+  flex-grow: 1;
+  padding: 50px;
+  background-color: #082032;
+}
 
 h1 {
   color: red;
