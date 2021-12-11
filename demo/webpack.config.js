@@ -13,11 +13,11 @@ module.exports = {
   },
   devServer: {
     port: 8080,
-    publicPath: '/build/',
+    publicPath: '/',
     //contentBase: './client/src',
-    
+
     proxy: {
-        '/': 'http://localhost:3000',
+      '/': 'http://localhost:3000',
     },
     hot: true,
     historyApiFallback: true,
@@ -25,29 +25,30 @@ module.exports = {
   //entry: path.resolve(__dirname, './client/index.tsx'),
   module: {
     rules: [
-        {
-            test: /\.(ts|js)x?$/,
-            exclude: /node_modules/,
-            use: {
-            loader: 'babel-loader',
-            options: {
-                presets: ['@babel/preset-react', '@babel/preset-env',"@babel/preset-typescript"]
-            }},
+      {
+        test: /\.(ts|js)x?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-react', '@babel/preset-env', "@babel/preset-typescript"]
+          }
         },
-        {
-          test: /\.css$/i,
-          //exclude: /node_modules/,
-          include: path.resolve(__dirname, "client"),
-          use: [ "style-loader", "css-loader" ],
-        },
-        {
-            test: /.(png|svg|jpg|gif|woff|ico|woff2|eot|ttf|otf)$/,
-            use: ['file-loader'],
-        },
+      },
+      {
+        test: /\.css$/i,
+        //exclude: /node_modules/,
+        include: path.resolve(__dirname, "client"),
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /.(png|svg|jpg|gif|woff|ico|woff2|eot|ttf|otf)$/,
+        use: ['file-loader'],
+      },
     ],
   },
   resolve: {
-    extensions: ['.js','.ts', '.tsx'],
+    extensions: ['.js', '.ts', '.tsx'],
   },
   plugins: [
     new HtmlWebpackPlugin({
