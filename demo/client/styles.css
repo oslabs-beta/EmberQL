@@ -36,6 +36,11 @@ body {
   background-color: #082032;
 }
 
+#query-input {
+  width: 200px;
+  height: 250px;
+}
+
 h1 {
   color: red;
 }

@@ -4,7 +4,7 @@ import QueryContainer from './QueryContainer';
 import GraphContainer from './GraphContainer';
 
 function DemoContainer() {
-  const [timesArray, setTimesArray] = useState<number[]>([500, 50, 20, 30, 10]);
+  const [timesArray, setTimesArray] = useState<number[]>([]);
   
   return (
     <div className="demo-container">

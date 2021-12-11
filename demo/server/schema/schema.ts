@@ -1,7 +1,3 @@
-const db = require('../models/db.js');
-
-
-
 import {
   GraphQLSchema,
   GraphQLObjectType,
@@ -11,6 +7,8 @@ import {
   GraphQLInt,
   GraphQLNonNull,
 } from 'graphql';
+
+const db = require('../models/db.js');
 
 // =========================== //
 // ===== TYPE DEFINITIONS ==== //
@@ -92,7 +90,7 @@ const RootQuery = new GraphQLObjectType({
     authors: {
       type: new GraphQLList(AuthorType),
       async resolve(parent, args) {
-        const queryString = `SELECT * FROM authors`;
+        const queryString = 'SELECT * FROM authors';
         const authors = await db.query(queryString);
         return authors.rows;
       },
@@ -151,10 +149,10 @@ const RootMutation = new GraphQLObjectType({
       },
       async resolve(parent, args) {
         const author = await db.query(
-          `SELECT id FROM authors WHERE name = '${args.author}'`
+          `SELECT id FROM authors WHERE name = '${args.author}'`,
         );
         const genre = await db.query(
-          `SELECT id FROM genres WHERE genres.name = '${args.genre}'`
+          `SELECT id FROM genres WHERE genres.name = '${args.genre}'`,
         );
         const authorID = author.rows[0].id;
         const genreID = genre.rows[0].id;
@@ -266,7 +264,7 @@ const RootMutation = new GraphQLObjectType({
     },
   },
 });
- 
+
 module.exports = new GraphQLSchema({
   query: RootQuery,
   mutation: RootMutation,

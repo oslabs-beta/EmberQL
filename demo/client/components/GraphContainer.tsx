@@ -39,7 +39,6 @@ const data = {
 
   return (
     <div className="graph-container">
-      <div>{timesArray}</div>
       <Line data={data}/>
     </div>
   )
