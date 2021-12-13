@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   mode: process.env.NODE_ENV,
   entry: "./client/index.tsx",
+  devtool: "source-map",
   //mode: "development",
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -26,12 +27,18 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(ts|js)x?$/,
+        test: /\.(ts|tsx)?$/,
+        exclude: /node_modules/,
+        loader: 'ts-loader',
+    },
+
+      {
+        test: /\.(js|jsx)?$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-react', '@babel/preset-env', "@babel/preset-typescript"]
+        loader: 'babel-loader',
+        options: {
+            presets: ['@babel/preset-react', '@babel/preset-env']
           }
         },
       },
