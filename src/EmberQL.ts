@@ -46,7 +46,7 @@ class EmberQL {
     res: express.Response,
     next: express.NextFunction
   ) {
-    this.redisCache.connect().flushall().quit();
+    this.redisCache.flushall();
     return next();
   }
 }
