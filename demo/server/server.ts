@@ -5,18 +5,36 @@ import schema from './schema/schema';
 import cors from 'cors';
 const app = express();
 const PORT = 3000;
-
+import EmberQL from '../../src/EmberQL';
 app.use(cors());
+
+const redis = require('redis');
+const redisCache = redis.createClient({
+  host: '127.0.0.1',
+  port: 6379,
+});
+redisCache.connect();
+redisCache.on('connect', () => {
+  console.log('Connected to Redis cache');
+});
+
+const Ember = new EmberQL(schema, redisCache);
+const EmberQuery = Ember.handleQuery;
+const CacheClear = Ember.flushCache;
 
 app.use(express.json());
 // statically serve everything in the build folder on the route '/build'
 console.log(
   'Should print MinifiedUglified build:',
-  path.resolve(__dirname, './build'),
+  path.resolve(__dirname, './build')
 );
 
 //eslint-disable-next-line @typescript-eslint/no-misused-promises
-app.use('/graphql', graphqlHTTP({ schema, graphiql: true }));
+app.use('/graphql', EmberQuery, graphqlHTTP({ schema }));
+
+app.use('/clearCache', CacheClear, (req, res) => {
+  res.status(202);
+});
 
 app.use('/build', express.static(path.resolve(__dirname, './build')));
 //app.use('/', express.static(path.resolve(__dirname, './client')));
@@ -27,7 +45,7 @@ app.use('/build', express.static(path.resolve(__dirname, './build')));
 // serve index.html on the route '/'
 //express.static is replacing the following: (because html gets bundled)
 app.get('/', (req: Request, res: Response) =>
-  res.status(200).sendFile(path.join(__dirname, '../index.html')),
+  res.status(200).sendFile(path.join(__dirname, '../index.html'))
 );
 
 app.listen(PORT); //listens on port 3000 -> http://localhost:3000/
