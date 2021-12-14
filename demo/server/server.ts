@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
 import path from 'path';
 import express, { Request, Response } from 'express';
-import { graphqlHTTP } from 'express-graphql';
+//import { graphqlHTTP } from 'express-graphql';
 import schema from './schema/schema';
 import cors from 'cors';
 const app = express();
@@ -24,13 +25,9 @@ const CacheClear = Ember.flushCache;
 
 app.use(express.json());
 // statically serve everything in the build folder on the route '/build'
-console.log(
-  'Should print MinifiedUglified build:',
-  path.resolve(__dirname, './build')
-);
+console.log('Should print MinifiedUglified build:', path.resolve(__dirname, './build'));
 
-//eslint-disable-next-line @typescript-eslint/no-misused-promises
-app.use('/graphql', EmberQuery, (req, res, next) => {
+app.use('/graphql', EmberQuery, (req, res) => {
   res.status(202).json(res.locals.data);
 });
 
@@ -46,9 +43,7 @@ app.use('/build', express.static(path.resolve(__dirname, './build')));
 
 // serve index.html on the route '/'
 //express.static is replacing the following: (because html gets bundled)
-app.get('/', (req: Request, res: Response) =>
-  res.status(200).sendFile(path.join(__dirname, '../index.html'))
-);
+app.get('/', (req: Request, res: Response) => res.status(200).sendFile(path.join(__dirname, '../index.html')));
 
 app.listen(PORT); //listens on port 3000 -> http://localhost:3000/
 console.log(`Listening on port ${PORT}...`);
