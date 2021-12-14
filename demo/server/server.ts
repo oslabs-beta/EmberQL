@@ -30,7 +30,9 @@ console.log(
 );
 
 //eslint-disable-next-line @typescript-eslint/no-misused-promises
-app.use('/graphql', EmberQuery, graphqlHTTP({ schema }));
+app.use('/graphql', EmberQuery, (req, res, next) => {
+  res.status(202).json(res.locals.data);
+});
 
 app.use('/clearCache', CacheClear, (req, res) => {
   res.status(202);

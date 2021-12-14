@@ -28,8 +28,9 @@ class EmberQL {
     this.graphQLQuery = req.body.query;
 
     if (await this.redisCache.exists(this.graphQLQuery)) {
-      res.locals.data = await this.redisCache.get(this.graphQLQuery);
-      res.status(202).json(res.locals);
+      const response = await this.redisCache.get(this.graphQLQuery);
+      res.locals.data = JSON.parse(response);
+      return next();
     } else {
       const results = await graphql({
         schema: this.schema,
