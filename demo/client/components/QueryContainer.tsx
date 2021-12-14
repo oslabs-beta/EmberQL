@@ -1,5 +1,6 @@
+/* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
-import { render } from 'react-dom';
+
 // import schema from '../../server/schema/schema';
 // const schema = require('../server/schema/schema');
 
@@ -44,7 +45,7 @@ const QueryContainer = function ({
 
   useEffect(() => {
     const inputField = document.getElementById(
-      'query-input'
+      'query-input',
     ) as HTMLSelectElement;
 
     if (selectedQuery === 'selection1') {
@@ -59,7 +60,7 @@ const QueryContainer = function ({
       inputField.value = sampleQuery3;
       setQuery(sampleQuery3);
     }
-  }, [selectedQuery]);
+  }, [sampleQuery1, sampleQuery2, sampleQuery3, selectedQuery]);
 
   const submitQuery = async () => {
     const startTime = Date.now();
