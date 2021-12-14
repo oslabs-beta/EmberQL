@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { render } from 'react-dom';
+import React, { useState } from 'react';
 import QueryContainer from './QueryContainer';
 import GraphContainer from './GraphContainer';
 
@@ -11,9 +10,9 @@ function DemoContainer() {
       <QueryContainer setTimesArray={setTimesArray} timesArray={timesArray}/>
       <GraphContainer timesArray={timesArray} />
     </div>
-  )
+  );
 }
 
 
-export default DemoContainer
+export default DemoContainer;
 

@@ -2,6 +2,7 @@
     "env": {
       "browser": true,
       "es6": true
+      
     },
     "rules": {
       "no-console": "warn",
@@ -13,7 +14,7 @@
       "indentation-style": "off",
       "spaced-comment": "off",
       "no-use-before-define": "warn",
-      
+      "@typescript-eslint/no-var-requires": 0,
       "@typescript-eslint/no-unused-vars": "error",
       "@typescript-eslint/indent": ["warn", 2],
       "@typescript-eslint/no-useless-constructor": "error",
@@ -39,7 +40,7 @@
         "modules": true,
         "jsx": true
       },
-      "project": "./tsconfig.json",
+      "project": "../demo/tsconfig.json",
       "sourceType": "module"
     },
     "settings": {

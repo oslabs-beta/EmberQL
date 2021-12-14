@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
 import path from 'path';
 import express, { Request, Response } from 'express';
-import { graphqlHTTP } from 'express-graphql';
+//import { graphqlHTTP } from 'express-graphql';
 import schema from './schema/schema';
 import cors from 'cors';
 const app = express();
