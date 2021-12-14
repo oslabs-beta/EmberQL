@@ -47,9 +47,10 @@
   "dependencies": {
     "@babel/runtime": "^7.16.3",
     "@types/mini-css-extract-plugin": "^2.4.0",
+    "@types/redis": "^4.0.11",
     "acorn": "^8.6.0",
     "chart.js": "^3.6.2",
-    "concurrently": "^5.3.0",
+    "concurrently": "^6.4.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "eslint-config-airbnb-typescript": "^16.1.0",
@@ -58,11 +59,12 @@
     "graphiql": "^1.4.0",
     "graphql": "^15.7.2",
     "mini-css-extract-plugin": "^2.4.5",
+    "node-redis": "^0.1.7",
     "pg": "^8.7.1",
     "react": "^17.0.2",
     "react-chartjs-2": "^4.0.0",
     "react-dom": "^17.0.2",
-    "redis": "^4.0.0"
+    "redis": "^4.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",

@@ -63,7 +63,7 @@ const QueryContainer = function ({
 
   const submitQuery = async () => {
     const startTime = Date.now();
-    await fetch('http://localhost:3000/graphql', {
+    await fetch('/graphql', {
       method: 'POST',
       headers: {
         'content-type': 'application/json;charset=UTF-8',
@@ -80,28 +80,28 @@ const QueryContainer = function ({
   };
 
   return (
-    <div className='query-container'>
+    <div className="query-container">
       <select
-        name='queries'
-        id='query-dropdown'
+        name="queries"
+        id="query-dropdown"
         onChange={(e) => {
           setSelectedQuery(e.target.value);
         }}
       >
-        <option value='selection1'>Sample Query 1</option>
-        <option value='selection2'>Sample Query 2</option>
-        <option value='selection3'>Sample Query 3</option>
+        <option value="selection1">Sample Query 1</option>
+        <option value="selection2">Sample Query 2</option>
+        <option value="selection3">Sample Query 3</option>
       </select>
-      <button id='submit-query' onClick={() => submitQuery()} type='submit'>
+      <button id="submit-query" onClick={() => submitQuery()} type="submit">
         Submit Query
       </button>
-      <button id='clear-cache' type='submit' onClick={() => clearCacheQuery()}>
+      <button id="clear-cache" type="submit" onClick={() => clearCacheQuery()}>
         Clear Cache
       </button>
       <br />
       <textarea
-        id='query-input'
-        placeholder='Please select a sample query from the drop down menu.'
+        id="query-input"
+        placeholder="Please select a sample query from the drop down menu."
         readOnly={true}
       ></textarea>
     </div>
