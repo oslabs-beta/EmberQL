@@ -19,8 +19,7 @@ redisCache.on('connect', () => {
 });
 
 const Ember = new EmberQL(schema, redisCache);
-const EmberQuery = Ember.handleQuery;
-const CacheClear = Ember.flushCache;
+// const EmberQuery = Ember.handleQuery;
 
 app.use(express.json());
 // statically serve everything in the build folder on the route '/build'
@@ -30,12 +29,12 @@ console.log(
 );
 
 //eslint-disable-next-line @typescript-eslint/no-misused-promises
-app.use('/graphql', EmberQuery, (req, res, next) => {
+app.use('/graphql', Ember.handleQuery, (req, res, next) => {
   res.status(202).json(res.locals.data);
 });
 
-app.use('/clearCache', CacheClear, (req, res) => {
-  res.status(202);
+app.use('/clearCache', Ember.clearCache, (req, res) => {
+  res.sendStatus(202);
 });
 
 app.use('/build', express.static(path.resolve(__dirname, './build')));

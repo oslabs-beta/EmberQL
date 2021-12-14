@@ -4,16 +4,13 @@ const redis = require('redis');
 
 class EmberQL {
   redisClient: any;
-  flushall: any;
   graphQLQuery: string;
   schema: GraphQLSchema;
   redisCache: any;
 
-  // Q: What is the type of a
-
   constructor(schema: GraphQLSchema, redisCache: any) {
     this.handleQuery = this.handleQuery.bind(this);
-    this.flushCache = this.flushCache.bind(this);
+    this.clearCache = this.clearCache.bind(this);
 
     this.graphQLQuery = '';
     this.schema = schema;
@@ -42,13 +39,13 @@ class EmberQL {
     }
   }
 
-  flushCache(
+  clearCache(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
   ) {
-    this.redisCache.flushall();
-    return next();
+    this.redisCache.flushAll();
+    next();
   }
 }
 
