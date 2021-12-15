@@ -22,10 +22,14 @@ redisCache.on('connect', () => {
 const Ember = new EmberQL(schema, redisCache);
 const EmberQuery = Ember.handleQuery;
 const CacheClear = Ember.flushCache;
+const EmberHeartbeat = Ember.heartbeat;
 
 app.use(express.json());
 // statically serve everything in the build folder on the route '/build'
-console.log('Should print MinifiedUglified build:', path.resolve(__dirname, './build'));
+console.log(
+  'Should print MinifiedUglified build:',
+  path.resolve(__dirname, './build')
+);
 
 app.use('/graphql', EmberQuery, (req, res) => {
   res.status(202).json(res.locals.data);
@@ -43,7 +47,13 @@ app.use('/build', express.static(path.resolve(__dirname, './build')));
 
 // serve index.html on the route '/'
 //express.static is replacing the following: (because html gets bundled)
-app.get('/', (req: Request, res: Response) => res.status(200).sendFile(path.join(__dirname, '../index.html')));
+app.get('/', (req: Request, res: Response) =>
+  res.status(200).sendFile(path.join(__dirname, '../index.html'))
+);
 
 app.listen(PORT); //listens on port 3000 -> http://localhost:3000/
 console.log(`Listening on port ${PORT}...`);
+
+setInterval(() => {
+  EmberHeartbeat();
+}, 10000);
