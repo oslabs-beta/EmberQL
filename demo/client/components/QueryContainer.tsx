@@ -15,29 +15,35 @@ const QueryContainer = function ({
 }: QueryContainerProps) {
   const [query, setQuery] = useState('');
   const [selectedQuery, setSelectedQuery] = useState('selection1');
+  const [incomingData, setIncomingData] = useState('');
 
-  const clearCacheQuery = () => {
+  const clearGraph = () => {
     setTimesArray([]);
+    setIncomingData('');
   };
 
-  const sampleQuery1 = `
-    query {
-      books {
-      title
-      authors{\n\tname\n\tcountry\n      }
-      genre{\n\tname\n      }
+  const clearCache = () => {
+    fetch('/clearcache', {
+      method: 'GET',
+    });
+    setIncomingData('');
+  };
+
+  const sampleQuery1 = `query {
+    books {
+    title
+    authors{\n\tname\n\tcountry\n      }
+    genre{\n\tname\n      }
     }
   }`;
 
-  const sampleQuery2 = `
-    query {
-      authors {
-      name
+  const sampleQuery2 = `query {
+    authors {
+    name
   }
 }`;
 
-  const sampleQuery3 = `
-  query {
+  const sampleQuery3 = `query {
     books {
       authors{\n\tname\n      }
     }
@@ -76,7 +82,7 @@ const QueryContainer = function ({
       .then((res) => res.json())
       .then((res) => {
         setTimesArray([...timesArray, Date.now() - startTime]);
-        console.log(res.data);
+        setIncomingData(`${JSON.stringify(res.data, null, 2)}`);
       });
   };
 
@@ -96,14 +102,40 @@ const QueryContainer = function ({
       <button id="submit-query" onClick={() => submitQuery()} type="submit">
         Submit Query
       </button>
-      <button id="clear-cache" type="submit" onClick={() => clearCacheQuery()}>
-        Clear Cache
-      </button>
+      <div className="clear-buttons-div">
+        <button
+          id="clear-graph"
+          className="clear-btn"
+          type="submit"
+          onClick={() => clearGraph()}
+        >
+          Clear Graph
+        </button>
+        <button
+          id="clear-cache"
+          className="clear-btn"
+          type="submit"
+          onClick={() => clearCache()}
+        >
+          Clear Cache
+        </button>
+      </div>
       <br />
+      <h2>Query:</h2>
       <textarea
+        className="text-area"
         id="query-input"
         placeholder="Please select a sample query from the drop down menu."
         readOnly={true}
+      ></textarea>
+      <br />
+      <h2>Data:</h2>
+      <textarea
+        className="text-area"
+        id="query-output"
+        placeholder="Incoming data will be shown here."
+        readOnly={true}
+        value={incomingData}
       ></textarea>
     </div>
   );

@@ -5,18 +5,19 @@ const fetch = require('node-fetch');
 
 class EmberQL {
   redisClient: any;
-  flushall: any;
   graphQLQuery: string;
   schema: GraphQLSchema;
   redisCache: any;
 
-  // Q: What is the type of a
-
   constructor(schema: GraphQLSchema, redisCache: any) {
     this.handleQuery = this.handleQuery.bind(this);
+<<<<<<< HEAD
     this.flushCache = this.flushCache.bind(this);
     this.heartbeat = this.heartbeat.bind(this);
     this.increaseTTL = this.increaseTTL.bind(this);
+=======
+    this.clearCache = this.clearCache.bind(this);
+>>>>>>> dev
 
     this.graphQLQuery = '';
     this.schema = schema;
@@ -45,6 +46,7 @@ class EmberQL {
     }
   }
 
+<<<<<<< HEAD
   heartbeat() {
     console.log('enter heartbeat');
     fetch('http://localhost:3000/graphql', {
@@ -97,12 +99,15 @@ class EmberQL {
   }
 
   flushCache(
+=======
+  clearCache(
+>>>>>>> dev
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
   ) {
-    this.redisCache.flushall();
-    return next();
+    this.redisCache.flushAll();
+    next();
   }
 }
 
