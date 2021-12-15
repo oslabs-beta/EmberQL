@@ -23,6 +23,7 @@
     "@types/redis": "^4.0.11",
     "express": "^4.17.1",
     "graphql": "^15.7.2",
+    "node-fetch": "^2.6.6",
     "redis": "^4.0.1"
   }
 }
