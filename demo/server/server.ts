@@ -20,8 +20,6 @@ redisCache.on('connect', () => {
 });
 
 const Ember = new EmberQL(schema, redisCache);
-const EmberQuery = Ember.handleQuery;
-const CacheClear = Ember.flushCache;
 const EmberHeartbeat = Ember.heartbeat;
 
 app.use(express.json());
