@@ -10,7 +10,7 @@ const pool = new Pool({
 
 const db = {
   query: function (queryString, params, callback) {
-    console.log(`Executed query: ${queryString}`);
+    // console.log(`Executed query: ${queryString}`);
     return pool.query(queryString, params, callback);
   },
 };

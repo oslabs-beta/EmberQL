@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import path from 'path';
 import express, { Request, Response } from 'express';
-//import { graphqlHTTP } from 'express-graphql';
+import { graphqlHTTP } from 'express-graphql';
 import schema from './schema/schema';
 import cors from 'cors';
 const app = express();
@@ -38,6 +38,8 @@ app.use('/clearCache', Ember.clearCache, (req, res) => {
   res.sendStatus(202);
 });
 
+app.use('/heartbeat', graphqlHTTP({ schema }));
+
 app.use('/build', express.static(path.resolve(__dirname, './build')));
 //app.use('/', express.static(path.resolve(__dirname, './client')));
 // app.use('/', (req: Request, res: Response) => {
@@ -55,4 +57,4 @@ console.log(`Listening on port ${PORT}...`);
 
 setInterval(() => {
   EmberHeartbeat();
-}, 10000);
+}, 3000);

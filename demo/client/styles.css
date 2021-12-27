@@ -34,10 +34,23 @@ body {
   flex: 0.5;
   padding: 50px;
   background-color: #082032;
+  align-items: center;
+}
+
+#query-dropdown {
+  width: 200px;
+  text-align: center;
+  font-size: 20px;
 }
 
 #submit-query {
   margin: 20px;
+  width: 300px;
+  border: none;
+  background-color: #FF4C29;
+  color: black;
+  height: 100px;
+  font-size: 34px;
 }
 
 .clear-buttons-div {
@@ -54,7 +67,7 @@ body {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 20px;
   margin: 10px;
 }
 
@@ -69,8 +82,8 @@ body {
 .text-area {
   width: 75%;
   height: 300px;
-  align-self: center;
   overflow: scroll;
+  font-size: 18px;
 }
 
 h1 {
