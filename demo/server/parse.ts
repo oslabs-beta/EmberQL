@@ -120,3 +120,10 @@ function getInfo(): void  {
     }
   });
 }
+
+// Object.keys(typeMap).map((typeName: string) => {
+//   const type = typeMap[typeName];
+//   if (type instanceof GraphQLObjectType) {
+//     //console.log(typeName);
+//   }
+// });
