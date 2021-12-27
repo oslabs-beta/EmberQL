@@ -60,7 +60,7 @@ class EmberQL {
         if (data.errors) {
           for (const error of data.errors) { 
             // console.log(error.message.slice(0, 20));
-            if (error.message.slice(0, 20) === 'getaddrinfo EAI_AGAI') {
+            if (error.message.slice(0, 20) === 'connect ECONNREFUSED') {
             console.log(`Heartbeat FAILED, Cache invalidation halted. ${date}`)
               this.increaseTTL();
             }
