@@ -8,7 +8,9 @@ import {
   Title,
   Tooltip,
   Legend,
+  ChartOptions,
 } from 'chart.js';
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -17,6 +19,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
+
 );
 import { Line } from 'react-chartjs-2';
 
@@ -29,7 +32,7 @@ function GraphContainer( { timesArray } : GraphContainerProps) {
     labels: timesArray.map((el, i) => `Query ${i + 1}`),
     datasets: [
       {
-        label: 'Dataset 1',
+        label: 'Query',
         data: timesArray,
         borderColor: '#FF4C29',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -37,9 +40,36 @@ function GraphContainer( { timesArray } : GraphContainerProps) {
     ],
   };
 
+  // use ChartOptions to change the default font size to 20
+  const options : any = {
+    legend: {
+      labels: {
+        font: {
+          size: 24,
+        },
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          font: {
+            size: 24,
+          },
+        },
+      },
+      y: {
+        ticks: {
+          font: {
+            size: 24,
+          },
+        },
+      },
+    },
+  };
+
   return (
     <div className="graph-container">
-      <Line data={data}/>
+      <Line data={data} options={options}/>
     </div>
   );
 }

@@ -44,7 +44,7 @@ class EmberQL {
 
   heartbeat() {
     console.log('enter heartbeat');
-    fetch('http://localhost:3000/graphql', {
+    fetch('http://localhost:3000/heartbeat', {
       method: 'POST',
       headers: {
         'content-type': 'application/json;charset=UTF-8',
@@ -55,12 +55,18 @@ class EmberQL {
     })
       .then((data: any) => data.json())
       .then((data: any) => {
-        console.log('data:', data);
+        const date = new Date()
+        // console.log('data:', data);
         if (data.errors) {
-          for (const error of data.errors) {
-            if (error.message.slice(0, 20) === 'connect ECONNREFUSED')
+          for (const error of data.errors) { 
+            // console.log(error.message.slice(0, 20));
+            if (error.message.slice(0, 20) === 'connect ECONNREFUSED') {
+            console.log(`Heartbeat FAILED, Cache invalidation halted. ${date}`)
               this.increaseTTL();
+            }
           }
+        } else {
+          console.log(`Heartbeat OK, ${date}`)
         }
       })
       .catch((err: any) => {
@@ -82,13 +88,14 @@ class EmberQL {
   // }
 
   async increaseTTL() {
-    console.log('ttl');
+    console.log('TTL increased on all KEYS');
     const keysArr = await this.redisCache.keys('*');
     for (const key of keysArr) {
       const currentTTL = await this.redisCache.ttl(key);
-      console.log('before', currentTTL);
+      // console.log('before', currentTTL);
       // ttl time is in seconds
-      await this.redisCache.EXPIRE(key, currentTTL + 10);
+      await this.redisCache.EXPIRE(key, currentTTL + 60);
+
       console.log(await this.redisCache.ttl(key));
     }
   }
