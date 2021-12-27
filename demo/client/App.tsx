@@ -1,6 +1,6 @@
 import React from 'react';
 import './styles.css';
-import DemoContainer from './components/DemoContainer';
+import DemoContainer from './components/demo-components/DemoContainer';
 
 function App() {
   return (
