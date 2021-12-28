@@ -82,3 +82,18 @@ const normalizeResponse = (parsedResponse) => {
 const generateKey = (id: string, typename: string): string => {
   return typename + '#' + id;
 };
+
+const cacheNormalizedQueryResponse = async (normalizedResponseObj) => {
+  for (const redisKey in normalizedResponseObj) {
+    if (!(await this.redisCache.exists)) {
+      this.redisCache.hset(redisKey, normalizeResponse[redisKey]);
+    }
+  }
+};
+
+//below not sufficient for delete mutations
+const cacheNormalizedMuationResponse = async (normalizedResponseObj) => {
+  for (const redisKey in normalizedResponseObj) {
+    this.redisCache.hset(redisKey, normalizeResponse[redisKey]);
+  }
+};
