@@ -1,0 +1,17 @@
+.contributing-container {
+  background-color: #082032;
+  width: 99vw;
+  height: 99vh;
+  /* border: black solid 1px; */
+  margin: 0;
+  padding: 10% 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.contributing-description {
+  max-width: 600px;
+  text-align: center;
+}

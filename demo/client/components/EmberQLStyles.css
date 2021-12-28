@@ -1,0 +1,40 @@
+#EmberQL {
+  color: #082032;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+#Title {
+  color: whitesmoke;
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 8em;
+  font-weight: 600;
+}
+#Paragraph {
+  width: 25em;
+  color: rgb(196, 196, 196);
+  font-style: italic;
+  padding-bottom: 4em;
+  font-family: 'Red Hat Display', sans-serif;
+}
+#Bullets {
+  color: whitesmoke;
+  font-weight: bold;
+  font-family: 'Red Hat Display', sans-serif;
+}
+button {
+  width: 8em;
+  height: 3em;
+  border-radius: 8px;
+  color: whitesmoke;
+  font-weight: bolder;
+  font-family: 'Red Hat Display', sans-serif;
+}
+#button1 {
+  background-color: #ff4c29;
+}
+#button2 {
+  border: 1px solid whitesmoke;
+  background-color: #082032;
+  color: whitesmoke;
+}
