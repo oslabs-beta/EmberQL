@@ -45,16 +45,35 @@ const normalizeResponse = (parsedResponse) => {
     const value = parsedResponse[key];
 
     if (typeof value === 'object') {
+      //value is an object
       if (!Array.isArray(value)) {
-        if (parsedResponse[key].id && parsedResponse[key].__typename) {
-          const normalizeKey = generateKey(
-            parsedResponse[key].id,
-            parsedResponse[key].__typename
-          );
-          normalizedObj[normalizeKey] = normalizeResponse(parsedResponse[key]);
+        //check if value is normalizable
+        if (value.id && value.__typename) {
+          const normalizeKey = generateKey(value.id, value.__typename);
+          //normalize
+          normalizedObj[normalizeKey] = normalizeResponse(value);
+          //add references
+          if (normalizedObj[key]) normalizedObj[key].__ref.push(normalizeKey);
+          else normalizedObj[key] = { __ref: [normalizeKey] };
         } else normalizedObj[key] = value;
       }
-    } else {
+      //value is an array
+      else {
+        //check if first item is normalizable. if normalizable, all elements should be normalizable b/c array is a graphqllist
+        if (value[0].id && value[0].__typename) {
+          for (const obj of parsedResponse[key]) {
+            const normalizeKey = generateKey(obj.id, obj.__typename);
+            //normalize
+            normalizedObj[normalizeKey] = normalizeResponse(obj);
+            //add references
+            if (normalizedObj[key]) normalizedObj[key].__ref.push(normalizeKey);
+            else normalizedObj[key] = { __ref: [normalizeKey] };
+          }
+        } else normalizedObj[key] = value;
+      }
+    }
+    //value is not an object
+    else {
       normalizedObj[key] = parsedResponse[key];
     }
   }
