@@ -37,6 +37,7 @@ class EmberQL {
         source: this.graphQLQuery,
       });
       this.redisCache.set(this.graphQLQuery, JSON.stringify(results));
+      console.log(results);
       res.locals.data = results;
       return next();
     }
@@ -55,18 +56,20 @@ class EmberQL {
     })
       .then((data: any) => data.json())
       .then((data: any) => {
-        const date = new Date()
+        const date = new Date();
         // console.log('data:', data);
         if (data.errors) {
-          for (const error of data.errors) { 
+          for (const error of data.errors) {
             // console.log(error.message.slice(0, 20));
             if (error.message.slice(0, 20) === 'connect ECONNREFUSED') {
-            console.log(`Heartbeat FAILED, Cache invalidation halted. ${date}`)
+              console.log(
+                `Heartbeat FAILED, Cache invalidation halted. ${date}`
+              );
               this.increaseTTL();
             }
           }
         } else {
-          console.log(`Heartbeat OK, ${date}`)
+          console.log(`Heartbeat OK, ${date}`);
         }
       })
       .catch((err: any) => {
