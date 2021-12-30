@@ -1,9 +1,47 @@
 import {
   DocumentNode,
   FieldNode,
+  getNamedType,
+  GraphQLObjectType,
+  GraphQLSchema,
+  IntValueNode,
   OperationDefinitionNode,
+  parse,
+  StringValueNode,
   visit,
 } from 'graphql';
+
+const getTypes = (schema: GraphQLSchema) => {
+  const defaultTypes = new Set([
+    'String',
+    'Int',
+    'Float',
+    'Boolean',
+    'ID',
+    'Query',
+    '__Type',
+    '__Field',
+    '__EnumValue',
+    '__DirectiveLocation',
+    '__Schema',
+    '__TypeKind',
+    '__InputValue',
+    '__Directive',
+  ]);
+  const typeMap = schema.getTypeMap();
+  const filteredMap = Object.keys(typeMap)
+    .filter((type) => !defaultTypes.has(type))
+    .reduce((curr, key) => Object.assign(curr, { key: typeMap[key] }), {});
+  //Object {typename: typeObject, typename: typeObject}
+  return filteredMap;
+};
+
+const getFields = (typeObject: GraphQLObjectType) => typeObject.getFields();
+
+const getQueriesFromSchema = (schema: GraphQLSchema) => {
+  const queries = schema.getQueryType()?.getFields();
+  return queries;
+};
 
 const addTypenameToQuery = (ast: DocumentNode): DocumentNode => {
   return visit(ast, {
@@ -24,22 +62,26 @@ const addTypenameToQuery = (ast: DocumentNode): DocumentNode => {
         )
           return;
 
-        const typename: FieldNode = {
-          kind: 'Field',
-          name: {
-            kind: 'Name',
-            value: '__typename',
-          },
-        };
+        const typename = makeFieldNode('__typename');
         return { ...node, selections: [...node.selections, typename] };
       },
     },
   });
 };
 
+const makeFieldNode = (fieldName: string): FieldNode => {
+  return {
+    kind: 'Field',
+    name: {
+      kind: 'Name',
+      value: fieldName,
+    },
+  };
+};
+
 //input: JSON.parse(graphQLResponse)
-const normalizeResponse = (parsedResponse) => {
-  const normalizedObj = {};
+const normalizeResponse = (parsedResponse: any) => {
+  const normalizedObj: any = {};
 
   for (const key in parsedResponse) {
     const value = parsedResponse[key];
@@ -79,21 +121,95 @@ const normalizeResponse = (parsedResponse) => {
   }
 };
 
-const generateKey = (id: string, typename: string): string => {
+function checkId(query: string): string {
+  const [start, end] = [query.indexOf(':') + 2, query.indexOf(')')]; //can return -1 if not found
+  return query.slice(start, end) || 'err';
+}
+// const queryById = `
+//   query {
+//     author(id: 2) {
+//       name
+//       }
+//   }`;
+// const id = checkId(queryById);
+// const parsedQuery = parse(queryById);
+
+// const populateFieldArray = (queryAst: any): object => {
+//   Object.keys(queryAst).forEach((typeName) => {
+//     const type = queryAst[typeName];
+
+//     if (
+//       !getNamedType(type).name.startsWith('__') &&
+//       type instanceof GraphQLObjectType
+//     ) {
+//       const field = type.getFields();
+//       Object.keys(field).forEach((fieldName) => {
+//         const args = queryAst[fieldName].args;
+//         console.log(fieldName, args);
+//       });
+//     }
+//   });
+
+//   return {};
+// };
+
+//first need to parse(query)
+//then pass parsed query to makeKey()
+//takes in query ast
+async function makeKey(ast: any): Promise<string> {
+  const field = ast.definitions[0]?.selectionSet.selections[0];
+  const fieldName = field.name.value;
+  const key = `${fieldName}#${id}`;
+
+  return key;
+}
+console.log(makeKey(parsedQuery));
+
+const generateKey = (typename: string, id: string): string => {
   return typename + '#' + id;
 };
 
-const cacheNormalizedQueryResponse = async (normalizedResponseObj) => {
-  for (const redisKey in normalizedResponseObj) {
-    if (!(await this.redisCache.exists)) {
-      this.redisCache.hset(redisKey, normalizeResponse[redisKey]);
-    }
-  }
-};
+// const cacheNormalizedQueryResponse = async (normalizedResponseObj) => {
+//   for (const redisKey in normalizedResponseObj) {
+//     if (!(await this.redisCache.exists)) {
+//       this.redisCache.hset(redisKey, normalizeResponse[redisKey]);
+//     }
+//   }
+// };
 
-//below not sufficient for delete mutations
-const cacheNormalizedMuationResponse = async (normalizedResponseObj) => {
-  for (const redisKey in normalizedResponseObj) {
-    this.redisCache.hset(redisKey, normalizeResponse[redisKey]);
-  }
+// //below not sufficient for delete mutations
+// const cacheNormalizedMuationResponse = async (normalizedResponseObj) => {
+//   for (const redisKey in normalizedResponseObj) {
+//     this.redisCache.hset(redisKey, normalizeResponse[redisKey]);
+//   }
+// };
+
+const getKeysFromQueryAST = (ast: any): string[] => {
+  const keys: string[] = [];
+  visit(ast, {
+    SelectionSet: {
+      enter(node, key, parent) {
+        const selections = node.selections;
+        for (const selection of selections) {
+          if (selection.kind === 'Field' && selection.arguments) {
+            const queryName = selection.name.value;
+            const typeName = this.typeMap[queryName];
+            const idVariants = new Set(['id', '_id', 'ID', 'Id']);
+            const argumentWithID = selection.arguments.filter((argument) =>
+              idVariants.has(argument.name.value)
+            );
+            if (argumentWithID.length > 0) {
+              const valueNode = argumentWithID[0].value as
+                | IntValueNode
+                | StringValueNode;
+              const id = valueNode.value;
+              const key = generateKey(typeName, id);
+              keys.push(key);
+            }
+          }
+        }
+      },
+    },
+  });
+  return keys;
 };
