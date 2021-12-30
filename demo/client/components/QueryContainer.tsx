@@ -83,7 +83,9 @@ const QueryContainer = function ({
       .then((res) => {
         setTimesArray([...timesArray, Date.now() - startTime]);
         setIncomingData(`${JSON.stringify(res.data, null, 2)}`);
+        console.log(res.data);
       });
+     
   };
 
   return (
