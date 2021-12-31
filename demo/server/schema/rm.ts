@@ -15,15 +15,18 @@ import {
 
 const queryById = `
   query {
+    getAuthors(id:3,id:4) {
+      name
+    }
     author(id: 2) {
       name
-      }
-      author(id: 4) {
-        name
-        }
-        author(id: 1) {
-          name
-          }
+    }
+    author(id: 4) {
+      name
+    }
+    author(id: 1) {
+      name
+    }
   }`;
 
 const parsedQuery = parse(queryById);
