@@ -80,8 +80,8 @@ const makeFieldNode = (fieldName: string): FieldNode => {
 };
 
 //input: JSON.parse(graphQLResponse)
-const normalizeResponse = (parsedResponse: any) => {
-  const normalizedObj: any = {};
+const normalizeResponse = (parsedResponse: { [x: string]: any }) => {
+  const normalizedObj: { [x: string]: any } = {};
 
   for (const key in parsedResponse) {
     const value = parsedResponse[key];
@@ -156,14 +156,14 @@ function checkId(query: string): string {
 //first need to parse(query)
 //then pass parsed query to makeKey()
 //takes in query ast
-async function makeKey(ast: any): Promise<string> {
-  const field = ast.definitions[0]?.selectionSet.selections[0];
-  const fieldName = field.name.value;
-  const key = `${fieldName}#${id}`;
+// async function makeKey(ast: any): Promise<string> {
+//   const field = ast.definitions[0]?.selectionSet.selections[0];
+//   const fieldName = field.name.value;
+//   const key = `${fieldName}#${id}`;
 
-  return key;
-}
-console.log(makeKey(parsedQuery));
+//   return key;
+// }
+// console.log(makeKey(parsedQuery));
 
 const generateKey = (typename: string, id: string): string => {
   return typename + '#' + id;
@@ -184,7 +184,7 @@ const generateKey = (typename: string, id: string): string => {
 //   }
 // };
 
-const getKeysFromQueryAST = (ast: any): string[] => {
+const getKeysFromQueryAST = (ast: DocumentNode): string[] => {
   const keys: string[] = [];
   visit(ast, {
     SelectionSet: {
@@ -203,8 +203,8 @@ const getKeysFromQueryAST = (ast: any): string[] => {
                 | IntValueNode
                 | StringValueNode;
               const id = valueNode.value;
-              const key = generateKey(typeName, id);
-              keys.push(key);
+              const redisKey = generateKey(typeName, id);
+              keys.push(redisKey);
             }
           }
         }
@@ -220,7 +220,9 @@ const getFromCache = async (key: string): Promise<any> => {
   return await Object.keys(redisResponse).reduce(async (curr, el) => {
     if (redisResponse[el]?.__ref)
       return Object.assign(curr, {
-        el: redisResponse[el].__ref.map(async (ref) => await getFromCache(ref)),
+        el: redisResponse[el].__ref.map(
+          async (ref: string) => await getFromCache(ref)
+        ),
       });
     else return Object.assign(curr, { el: redisResponse[el] });
   }, {});
