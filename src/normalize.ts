@@ -213,3 +213,15 @@ const getKeysFromQueryAST = (ast: any): string[] => {
   });
   return keys;
 };
+
+//might need to filter out fields that weren't requested in queryString
+const getFromCache = async (key: string): Promise<any> => {
+  const redisResponse = await this.redisCache.hget(key);
+  return await Object.keys(redisResponse).reduce(async (curr, el) => {
+    if (redisResponse[el]?.__ref)
+      return Object.assign(curr, {
+        el: redisResponse[el].__ref.map(async (ref) => await getFromCache(ref)),
+      });
+    else return Object.assign(curr, { el: redisResponse[el] });
+  }, {});
+};
