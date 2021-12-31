@@ -9,6 +9,7 @@ import {
   parse,
   StringValueNode,
   visit,
+  print,
 } from 'graphql';
 
 const getTypes = (schema: GraphQLSchema) => {
@@ -36,11 +37,23 @@ const getTypes = (schema: GraphQLSchema) => {
   return filteredMap;
 };
 
-const getFields = (typeObject: GraphQLObjectType) => typeObject.getFields();
+//TODO function to generate map from GQLObjectTypes in Schema to a set containing all fields of the object (eg book : Set[title, id, authors, genre, publisher, __typename])
 
 const getQueriesFromSchema = (schema: GraphQLSchema) => {
   const queries = schema.getQueryType()?.getFields();
   return queries;
+};
+
+const getFields = (typeObject: GraphQLObjectType) => typeObject.getFields();
+
+//generates map that maps from query names to return value of GraphQLObjectTypes
+const generateQueryMap = (schema: GraphQLSchema) => {
+  const queryList = getQueriesFromSchema(schema);
+  const typeMap: { [queryName: string]: any } = {};
+  for (const query of queryList) {
+    typeMap[query] = getFields(query);
+  }
+  return typeMap;
 };
 
 const addTypenameToQuery = (ast: DocumentNode): DocumentNode => {
@@ -78,6 +91,8 @@ const makeFieldNode = (fieldName: string): FieldNode => {
     },
   };
 };
+
+const ASTtoQueryString = (ast: DocumentNode): string => print(ast);
 
 //input: JSON.parse(graphQLResponse)
 const normalizeResponse = (parsedResponse: { [x: string]: any }) => {
@@ -119,51 +134,13 @@ const normalizeResponse = (parsedResponse: { [x: string]: any }) => {
       normalizedObj[key] = parsedResponse[key];
     }
   }
+  return normalizedObj;
 };
 
 function checkId(query: string): string {
   const [start, end] = [query.indexOf(':') + 2, query.indexOf(')')]; //can return -1 if not found
   return query.slice(start, end) || 'err';
 }
-// const queryById = `
-//   query {
-//     author(id: 2) {
-//       name
-//       }
-//   }`;
-// const id = checkId(queryById);
-// const parsedQuery = parse(queryById);
-
-// const populateFieldArray = (queryAst: any): object => {
-//   Object.keys(queryAst).forEach((typeName) => {
-//     const type = queryAst[typeName];
-
-//     if (
-//       !getNamedType(type).name.startsWith('__') &&
-//       type instanceof GraphQLObjectType
-//     ) {
-//       const field = type.getFields();
-//       Object.keys(field).forEach((fieldName) => {
-//         const args = queryAst[fieldName].args;
-//         console.log(fieldName, args);
-//       });
-//     }
-//   });
-
-//   return {};
-// };
-
-//first need to parse(query)
-//then pass parsed query to makeKey()
-//takes in query ast
-// async function makeKey(ast: any): Promise<string> {
-//   const field = ast.definitions[0]?.selectionSet.selections[0];
-//   const fieldName = field.name.value;
-//   const key = `${fieldName}#${id}`;
-
-//   return key;
-// }
-// console.log(makeKey(parsedQuery));
 
 const generateKey = (typename: string, id: string): string => {
   return typename + '#' + id;
@@ -193,7 +170,7 @@ const getKeysFromQueryAST = (ast: DocumentNode): string[] => {
         for (const selection of selections) {
           if (selection.kind === 'Field' && selection.arguments) {
             const queryName = selection.name.value;
-            const typeName = this.typeMap[queryName];
+            const typeName = this.queryMap[queryName];
             const idVariants = new Set(['id', '_id', 'ID', 'Id']);
             const argumentWithID = selection.arguments.filter((argument) =>
               idVariants.has(argument.name.value)
@@ -213,6 +190,13 @@ const getKeysFromQueryAST = (ast: DocumentNode): string[] => {
   });
   return keys;
 };
+
+const getTypenameFromKey = (key: string): string => {
+  const charIndex = key.indexOf('#');
+  return key.slice(0, charIndex + 1);
+};
+
+//need to use getTypenameFromKey to make outer object in getFromCache
 
 //might need to filter out fields that weren't requested in queryString
 const getFromCache = async (key: string): Promise<any> => {
