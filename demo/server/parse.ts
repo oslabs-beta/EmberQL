@@ -6,6 +6,7 @@ import { GraphQLObjectType } from 'graphql';
 import { moveMessagePortToContext } from 'worker_threads';
 //import gql from 'graphql-tag';
 
+const book = schema.getTypeMap().Book;
 
 
 const typeMap = schema.getTypeMap();
@@ -29,6 +30,12 @@ const queryById = `
     author(id: 2) {
       name
       }
+      author(id: 4) {
+        name
+        }
+        author(id: 1) {
+          name
+          }
   }`;
 
 // books.title 
@@ -197,23 +204,47 @@ function mapKey(ast: any): string {
 
 
 
-const id = checkId(queryById);
+//const id = checkId(queryById);
 
-async function makeKey(ast: any): Promise<string> {
+//  function makeKey(ast: any): Promise<string> {
 
-  const field =  ast.definitions[0]?.selectionSet.selections[0];
+//   const field =  ast.definitions[0]?.selectionSet.selections[0];
 
-  const fieldName = field.name.value;
-  const key = `${fieldName}#${id}`;
-  const redisObject = {} as { [key: string]: any };
+//   const fieldName = field.name.value;
+//   const key = `${fieldName}#${id}`;
+//   const redisObject = {} as { [key: string]: any };
 
     
-  const result = await graphql(schema, queryById);
-  redisObject[key] = result.data;
-  console.log(JSON.stringify(redisObject));
-  return JSON.stringify(redisObject);
+//   const result = await graphql(schema, queryById);
+//   redisObject[key] = result.data;
+//   console.log(JSON.stringify(redisObject));
+//   return JSON.stringify(redisObject);
+// }
+// makeKey(parsedQuery);
+
+const id = checkId(queryById);
+
+
+//first need to parse(query)
+//then pass parsed query to makeKey()
+//takes in query ast
+function makeKey(ast: any): string {
+  const field = ast.definitions[0]?.selectionSet.selections[0];
+  const fieldName = field.name.value;
+  const key = `${fieldName}#${id}`;
+
+  return key;
 }
-makeKey(parsedQuery);
+console.log(makeKey(parsedQuery));
+
+
+
+
+
+
+
+
+
 
 //need to iterate through the query and find all id's and fieldNames
 
@@ -277,3 +308,4 @@ makeKey(parsedQuery);
 
 //typename,args for key in redis
 //selection.name.kind
+
