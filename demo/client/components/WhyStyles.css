@@ -9,6 +9,8 @@
 .single-reason {
   align-items: center;
   display: flex;
+  margin-left: 4vw;
+  margin-right: 4vw;
 }
 .reason-img {
   border-radius: 50%;
@@ -17,6 +19,8 @@
 }
 .reason-description {
   font-family: 'Red Hat Display', sans-serif;
+  margin-left: 4vw;
+  margin-right: 4vw;
 }
 .reason-container {
   display: flex;

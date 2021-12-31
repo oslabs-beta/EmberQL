@@ -8,7 +8,6 @@ import Contributing from './Contributing';
 function LandingContainer() {
   return (
     <div>
-      <Navbar></Navbar>
       <EmberQL></EmberQL>
       <Features />
       <WhyWeExist />

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './EmberQLStyles.css';
 
 function EmberQL() {
@@ -22,8 +23,13 @@ function EmberQL() {
         </ul>
       </div>
       <div id='ButtonContainer'>
-        <button id='button1'>Demo</button>
-        <button id='button2'>Docs</button>
+        <Link to='/Demo' style={{ textDecoration: 'none' }}>
+          <button id='button1'>Demo</button>
+        </Link>
+
+        <Link to='/Docs' style={{ textDecoration: 'none' }}>
+          <button id='button2'>Docs</button>
+        </Link>
       </div>
     </div>
   );

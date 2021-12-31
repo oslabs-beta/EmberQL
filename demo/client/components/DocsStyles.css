@@ -1,0 +1,20 @@
+.section-title {
+  font-size: 8em;
+  font-family: 'Red Hat Display', sans-serif;
+  font-weight: 200;
+}
+
+.link {
+  font-size: 3em;
+  font-family: 'Red Hat Display', sans-serif;
+}
+
+.github {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.read-me {
+  display: flex;
+}
