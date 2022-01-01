@@ -1,15 +1,11 @@
-.section-title {
-  font-size: 8em;
+#section-title {
+  font-size: 8vw;
   font-family: 'Red Hat Display', sans-serif;
-  font-weight: 200;
+  font-weight: 400;
 }
 
 .feature-container {
   background-color: #082032;
-  width: 99vw;
-  height: 99vh;
-  /* border: black solid 1px; */
-  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,25 +16,23 @@
 .features {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin: 0 15vw;
 }
 
 .feature-img {
   border-radius: 50%;
-  margin-bottom: 40px;
+  margin-bottom: 4vh;
   box-shadow: 5px 7px 14px black;
-}
-
-h2 {
-  color: whitesmoke;
+  max-width: 100%;
+  width: auto;
+  height: auto;
 }
 
 .single-feature {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
   text-align: center;
   margin: 4vw;
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 2vw;
 }

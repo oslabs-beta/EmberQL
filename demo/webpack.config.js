@@ -4,8 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: process.env.NODE_ENV,
-  entry: "./client/index.tsx",
-  devtool: "source-map",
+  entry: './client/index.tsx',
+  devtool: 'source-map',
   //mode: "development",
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -30,23 +30,23 @@ module.exports = {
         test: /\.(ts|tsx)?$/,
         exclude: /node_modules/,
         loader: 'ts-loader',
-    },
+      },
 
       {
         test: /\.(js|jsx)?$/,
         exclude: /node_modules/,
         use: {
-        loader: 'babel-loader',
-        options: {
-            presets: ['@babel/preset-react', '@babel/preset-env']
-          }
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-react', '@babel/preset-env'],
+          },
         },
       },
       {
         test: /\.css$/i,
         //exclude: /node_modules/,
-        include: path.resolve(__dirname, "client"),
-        use: ["style-loader", "css-loader"],
+        include: path.resolve(__dirname, 'client'),
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /.(png|svg|jpg|gif|woff|ico|woff2|eot|ttf|otf)$/,

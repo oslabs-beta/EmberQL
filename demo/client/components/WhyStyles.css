@@ -5,6 +5,7 @@
 }
 .section-title {
   display: flex;
+  font-size: 8vw;
 }
 .single-reason {
   align-items: center;
