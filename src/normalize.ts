@@ -13,50 +13,114 @@ import {
 } from 'graphql';
 
 const ASTtoQueryString = (ast: DocumentNode): string => print(ast);
-
+const generateKey = (typename: string, id: string): string => {
+  return typename + '#' + id;
+};
 //input: JSON.parse(graphQLResponse)
 const normalizeResponse = (parsedResponse: { [x: string]: any }) => {
-  const normalizedObj: { [x: string]: any } = {};
+  const refObj: { [x: string]: any } = {};
 
-  for (const key in parsedResponse) {
-    const value = parsedResponse[key];
-
-    if (typeof value === 'object') {
-      //value is an object
-      if (!Array.isArray(value)) {
-        //check if value is normalizable
-        if (value.id && value.__typename) {
-          const normalizeKey = generateKey(value.id, value.__typename);
-          //normalize
-          normalizedObj[normalizeKey] = normalizeResponse(value);
-          //add references
-          if (normalizedObj[key]) normalizedObj[key].__ref.push(normalizeKey);
-          else normalizedObj[key] = { __ref: [normalizeKey] };
-        } else normalizedObj[key] = value;
-      }
-      //value is an array
-      else {
-        //check if first item is normalizable. if normalizable, all elements should be normalizable b/c array is a graphqllist
-        if (value[0].id && value[0].__typename) {
-          for (const obj of parsedResponse[key]) {
-            const normalizeKey = generateKey(obj.id, obj.__typename);
+  const helper = (parsedResponse: { [x: string]: any }) => {
+    const normalizedObj: { [x: string]: any } = {};
+    for (const key in parsedResponse) {
+      const value = parsedResponse[key];
+      if (typeof value === 'object') {
+        //value is an object
+        if (!Array.isArray(value)) {
+          //check if value is normalizable
+          if (value.id && value.__typename) {
+            const normalizeKey = generateKey(value.id, value.__typename);
             //normalize
-            normalizedObj[normalizeKey] = normalizeResponse(obj);
+            refObj[normalizeKey] = helper(value);
             //add references
             if (normalizedObj[key]) normalizedObj[key].__ref.push(normalizeKey);
             else normalizedObj[key] = { __ref: [normalizeKey] };
-          }
-        } else normalizedObj[key] = value;
+          } else normalizedObj[key] = value;
+        }
+        //value is an array
+        else {
+          //check if first item is normalizable. if normalizable, all elements should be normalizable b/c array is a graphqllist
+          if (value[0].id && value[0].__typename) {
+            for (const obj of parsedResponse[key]) {
+              const normalizeKey = generateKey(obj.id, obj.__typename);
+              //normalize
+              refObj[normalizeKey] = helper(obj);
+              //add references
+              if (normalizedObj[key])
+                normalizedObj[key].__ref.push(normalizeKey);
+              else normalizedObj[key] = { __ref: [normalizeKey] };
+            }
+          } else normalizedObj[key] = value;
+        }
+      }
+      //value is not an object
+      else {
+        normalizedObj[key] = parsedResponse[key];
       }
     }
-    //value is not an object
-    else {
-      normalizedObj[key] = parsedResponse[key];
-    }
-  }
-  return normalizedObj;
+
+    return normalizedObj;
+  };
+
+  const normal = helper(parsedResponse.data ?? parsedResponse);
+  console.log(normal);
+  return refObj;
 };
 
+const response = {
+  data: {
+    movies: [
+      {
+        __typename: 'Movie',
+        id: '1',
+        title: 'Indiana Jones and the Last Crusade',
+        genre: 'ACTION',
+        actors: [
+          {
+            __typename: 'Actor',
+            id: '1',
+            firstName: 'Harrison',
+          },
+          {
+            __typename: 'Actor',
+            id: '2',
+            firstName: 'Sean',
+          },
+        ],
+      },
+      {
+        __typename: 'Movie',
+        id: '4',
+        title: 'Air Force One',
+        genre: 'ACTION',
+        actors: [
+          {
+            __typename: 'Actor',
+            id: '1',
+            firstName: 'Harrison',
+          },
+          {
+            __typename: 'Actor',
+            id: '5',
+            firstName: 'Gary',
+          },
+        ],
+      },
+    ],
+    actors: [
+      {
+        __typename: 'Actor',
+        id: '1',
+        firstName: 'Harrison',
+      },
+      { __typename: 'Actor', id: '2', firstName: 'Sean' },
+      { __typename: 'Actor', id: '3', firstName: 'Mark' },
+      { __typename: 'Actor', id: '4', firstName: 'Patti' },
+    ],
+  },
+};
+
+console.log(JSON.stringify(normalizeResponse(response)));
 // function checkId(query: string): string {
 //   const [start, end] = [query.indexOf(':') + 2, query.indexOf(')')]; //can return -1 if not found
 //   return query.slice(start, end) || 'err';
@@ -121,7 +185,3 @@ const normalized = normalizeResponse(JSON.stringify(fullResponse))
 //how to minimize attempting to recache???
 
 */
-
-const generateKey = (typename: string, id: string): string => {
-  return typename + '#' + id;
-};
