@@ -16,7 +16,7 @@ After all is finished and pushed to your branch, issue that pull request to the 
 function Contributing() {
   return (
     <div className='contributing-container'>
-      <h2 className='section-title'>CONTRIBUTING</h2>
+      <h2 id='section-title'>CONTRIBUTING</h2>
       <p className='contributing-description'>{description}</p>
     </div>
   );

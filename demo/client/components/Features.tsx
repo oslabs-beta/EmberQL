@@ -19,9 +19,9 @@ function Features() {
   ];
 
   return (
-    <div className='feature-container'>
+    <div className='features'>
       <h2 id='section-title'>FEATURES</h2>
-      <div className='features'>
+      <div className='feature-container'>
         {featureArray.map((el, i) => (
           <Feature
             img={el.img}

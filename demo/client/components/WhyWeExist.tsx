@@ -25,23 +25,22 @@ function WhyWeExist() {
 
   return (
     <div className='Why'>
-      <h2 className='section-title'>Why We Exist</h2>
+      <h2 id='section-title'>Why We Exist</h2>
 
       <div className='reason-container'>
-        <div className='reasons'>
-          {reasonArray.map((el, i) => (
-            <WhyReason
-              img={el.img}
-              description={el.description}
-              key={`reason-${i}`}
-              style={
-                i % 2 === 0
-                  ? { flexDirection: 'row' }
-                  : { flexDirection: 'row-reverse' }
-              }
-            />
-          ))}
-          {/* {reasonArray.map((el, i) => (
+        {reasonArray.map((el, i) => (
+          <WhyReason
+            img={el.img}
+            description={el.description}
+            key={`reason-${i}`}
+            style={
+              i % 2 === 0
+                ? { flexDirection: 'row' }
+                : { flexDirection: 'row-reverse' }
+            }
+          />
+        ))}
+        {/* {reasonArray.map((el, i) => (
             <WhyReason
               img={el.img}
               description={el.description}
@@ -49,7 +48,6 @@ function WhyWeExist() {
             />
           )
           )} */}
-        </div>
       </div>
     </div>
   );
