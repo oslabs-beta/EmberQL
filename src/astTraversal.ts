@@ -26,6 +26,7 @@ const traverse = (
     const queryFields: { [queryName: string]: any } = {};
     const rels: { [queryName: string]: any } = {};
     const defaultTypes = new Set(['String', 'Int', 'Float', 'Boolean', 'ID']);
+
     return {
       queryFields,
       ast: visit(ast, {
@@ -47,22 +48,23 @@ const traverse = (
 
             const missingFieldNodes = [];
             const parentType =
-              fieldMap[parentName] ??
-              rels[parentName] ??
-              queryMap[parentName] ??
+              //fieldMap[parentName] ??
+              rels[parentName] ?? //
+              queryMap[parentName] ?? // first iteration is query
               {};
             for (const field in fieldMap[parentType]) {
               const fieldObj = fieldMap[parentType][field];
-              if (!fields.has(fieldObj.name)) {
-                //check if added field type is default or nested(ID vs Book)
-                console.log(typeof fieldObj.type);
-                console.log(fieldObj.type.name);
-                if (defaultTypes.has(fieldObj.type.name))
+
+              if (defaultTypes.has(fieldObj.type.name)) {
+                if (!fields.has(fieldObj.name)) {
                   missingFieldNodes.push(makeFieldNode(fieldObj.name));
-                else {
-                  rels[fieldObj.name] = fieldObj.type;
+                }
+              } else {
+                if (!fields.has(fieldObj.name)) {
                   missingFieldNodes.push(makeFieldNode(fieldObj.name, []));
                 }
+                rels[fieldObj.name] =
+                  fieldObj.type.ofType?.name ?? fieldObj.type;
               }
             }
             //add typename
@@ -143,16 +145,12 @@ const getAllQueryFields = (
             const missingFields = [];
             //console.log(parent.type)
             const parentType = queryMap[(parent as FieldNode).name.value];
-            console.log(parentType);
-            console.log(fieldsMap[parentType]);
             for (const field of fieldMap[parentType]) {
-              console.log('asdfas');
               if (!fields.has(field)) missingFields.push(field);
             }
             const missingFieldNodes = missingFields.map((field) =>
               makeFieldNode(field)
             );
-            console.log(missingFieldNodes);
             return {
               ...node,
               selections: [...node.selections, ...missingFieldNodes],
@@ -227,9 +225,8 @@ const makeFieldNode = (
 const query = `{
   book(id:5){
     id
-    authors {
+    genre{
       id
-      name
     }
   }
 }`;
