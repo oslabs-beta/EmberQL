@@ -8,17 +8,8 @@ class EmberQL {
   graphQLQuery: string;
   schema: GraphQLSchema;
   redisCache: any;
-  normalize: Boolean;
-  ttl: number;
-  identifiers: string[];
 
-  constructor(
-    schema: GraphQLSchema,
-    redisCache: any,
-    normalize = true,
-    ttl = 36000,
-    identifiers = ['id', '_id', 'ID', 'Id']
-  ) {
+  constructor(schema: GraphQLSchema, redisCache: any) {
     this.handleQuery = this.handleQuery.bind(this);
     this.clearCache = this.clearCache.bind(this);
     this.heartbeat = this.heartbeat.bind(this);

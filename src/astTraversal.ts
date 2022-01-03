@@ -13,23 +13,49 @@ import schema from '/Users/Home/codesmith/EmberQL/demo/server/schema/schema';
 import { generateFieldsMap, generateQueryMap } from './maps';
 
 //gets all query fields, add missing query fields and __typename to ast. does not yet check or append __typename
-const traverse = (
+export const traverse = (
   ast: DocumentNode,
   fieldMap: { [typename: string]: any },
-  queryMap: { [queryName: string]: any }
+  queryMap: { [queryName: string]: any },
+  identifiers: string[] = ['id', '_id', 'ID', 'Id']
 ): any =>
   // {
   //   [queryFields: string]: { [queryName: string]: any },
   //   [ast: string]: DocumentNode;
   // }
   {
-    const queryFields: { [queryName: string]: any } = {};
-    const rels: { [queryName: string]: any } = {};
     const defaultTypes = new Set(['String', 'Int', 'Float', 'Boolean', 'ID']);
 
+    const queryFields: { [queryName: string]: any } = {};
+    const rels: { [queryName: string]: any } = {};
+    const redisKeys: string[] = [];
+
     return {
+      redisKeys,
       queryFields,
       ast: visit(ast, {
+        Field: {
+          enter(node, key, parent) {
+            if (node.arguments) {
+              const queryName = node.name.value;
+              const typeName = queryMap[queryName] ?? queryName;
+              const idVariants = new Set(identifiers);
+              const argumentWithID = node.arguments.filter((argument) =>
+                idVariants.has(argument.name.value)
+              );
+
+              if (argumentWithID.length > 0) {
+                const valueNode = argumentWithID[0].value as
+                  | IntValueNode
+                  | StringValueNode;
+                const id = valueNode.value;
+                const redisKey = generateKey(typeName, id);
+                redisKeys.push(redisKey);
+              }
+            }
+          },
+        },
+
         SelectionSet: {
           enter(node, key, parent) {
             const fields = new Set();
@@ -164,7 +190,7 @@ const getAllQueryFields = (
 //TODO fix typing of queryMap (here and in maps file)
 // how to address listtypes ? eg key getting made for '[Author]#3'
 // should query be a key when no id eg books?
-const getKeysFromQueryAST = (
+export const getKeysFromQueryAST = (
   ast: DocumentNode,
   queryMap: { [queryName: string]: any }
 ): string[] => {
@@ -233,6 +259,6 @@ const query = `{
 const ast = parse(query);
 const queryMap = generateQueryMap(schema);
 const fieldsMap = generateFieldsMap(schema);
-// console.log(fieldsMap);
-// console.log(queryMap);
-console.log(print(traverse(ast, fieldsMap, queryMap).ast));
+console.log(fieldsMap);
+//console.log(print(traverse(ast, fieldsMap, queryMap).ast));
+console.log(traverse(ast, fieldsMap, queryMap).redisKeys);
