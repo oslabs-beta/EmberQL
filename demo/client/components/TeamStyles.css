@@ -1,4 +1,4 @@
-.section-title {
+#section-title {
   font-size: 8em;
   font-family: 'Red Hat Display', sans-serif;
   font-weight: 500;
@@ -46,4 +46,13 @@
 
 .member-description {
   font-size: xx-large;
+}
+
+@media (max-width: 900px) {
+  .team-1 {
+    flex-direction: column;
+  }
+  .team-2 {
+    flex-direction: column;
+  }
 }

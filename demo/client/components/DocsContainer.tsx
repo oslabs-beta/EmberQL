@@ -7,9 +7,10 @@ function DocsContainer() {
   return (
     <div className='github'>
       <h2 className='section-title'>Docs</h2>
-      {/* <a href='https://github.com/oslabs-beta/EmberQL#readme' className='link'>
+      <a href='https://github.com/oslabs-beta/EmberQL#readme' className='link'>
         EmberQL Github
-      </a> */}
+      </a>
+
       {/* <img src={pic} alt='Github Readme' height='80%' width='80%' /> */}
     </div>
   );

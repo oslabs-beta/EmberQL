@@ -28,7 +28,7 @@ function Team() {
   ];
   return (
     <div className='team-container'>
-      <h2 className='section-title'>Meet The Team</h2>
+      <h2 id='section-title'>Meet The Team</h2>
 
       <div className='team-1'>
         <TeamMember
