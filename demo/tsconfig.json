@@ -19,5 +19,5 @@
     "resolveJsonModule": true
   },
   "exclude": ["node_modules"],
-  "include": ["client/**/*.tsx", "server/**/*.ts", "../../src/**/*.ts", "d.ts"]
+  "include": ["client/**/*.tsx", "server/**/*.ts", "../../src/**/*.ts", "./d.ts"]
 }
