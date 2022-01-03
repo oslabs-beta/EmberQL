@@ -55,6 +55,7 @@ app.get('/', (req: Request, res: Response) =>
 app.listen(PORT); //listens on port 3000 -> http://localhost:3000/
 console.log(`Listening on port ${PORT}...`);
 
-setInterval(() => {
-  EmberHeartbeat();
-}, 3000);
+// Commenting temporarily during website build (28/12/2021)
+// setInterval(() => {
+//   EmberHeartbeat();
+// }, 3000);

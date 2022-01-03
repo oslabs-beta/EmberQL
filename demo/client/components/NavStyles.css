@@ -1,0 +1,18 @@
+nav {
+  background-color: #082032;
+  padding: 0;
+  margin: 0;
+  padding: 2vw;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  border: 0.5vw solid #ff4c29;
+}
+.nav-el {
+  color: white;
+  font-family: 'Red Hat Display', sans-serif;
+  font-weight: 800;
+  display: flex;
+  font-size: 2vw;
+}
