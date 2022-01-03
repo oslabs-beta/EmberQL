@@ -3,6 +3,10 @@ import * as express from 'express';
 const redis = require('redis');
 const fetch = require('node-fetch');
 
+import { generateFieldsMap, generateQueryMap } from './maps';
+import { traverse } from './astTraversal';
+import { OperationDefinitionNode, parse } from 'graphql';
+
 class EmberQL {
   redisClient: any;
   graphQLQuery: string;
@@ -11,6 +15,8 @@ class EmberQL {
   normalize: Boolean;
   ttl: number;
   identifiers: string[];
+  queryMap: { [queryName: string]: any };
+  fieldsMap: { [typename: string]: any };
 
   constructor(
     schema: GraphQLSchema,
@@ -23,10 +29,17 @@ class EmberQL {
     this.clearCache = this.clearCache.bind(this);
     this.heartbeat = this.heartbeat.bind(this);
     this.increaseTTL = this.increaseTTL.bind(this);
+    this.getFromCache = this.getFromCache.bind(this);
 
     this.graphQLQuery = '';
     this.schema = schema;
+    this.queryMap = generateQueryMap(schema);
+    this.fieldsMap = generateFieldsMap(schema);
+
     this.redisCache = redisCache;
+    this.ttl = ttl;
+    this.normalize = normalize;
+    this.identifiers = identifiers;
   }
 
   async handleQuery(
@@ -36,19 +49,60 @@ class EmberQL {
   ) {
     this.graphQLQuery = req.body.query;
 
-    if (await this.redisCache.exists(this.graphQLQuery)) {
-      const response = await this.redisCache.get(this.graphQLQuery);
-      res.locals.data = JSON.parse(response);
-      return next();
+    //send to next middleware if there is no query
+    if (this.graphQLQuery === undefined) return next();
+
+    const ast = parse(this.graphQLQuery);
+
+    //TODO add operationType fetching to traverse method
+    const operationType = (ast.definitions[0] as OperationDefinitionNode)
+      .operation;
+
+    if (this.normalize) {
+      const { redisKeys, queryFields, modifiedAST } = traverse(
+        ast,
+        this.fieldsMap,
+        this.queryMap,
+        this.identifiers
+      );
+
+      if (operationType === 'query') {
+        const cached: { [queryName: string]: any } = {};
+        for (const key of redisKeys) {
+          const value = this.getFromCache(key);
+          if (value === null) break;
+          else {
+            // NEED TO REFACTOR KEY SO THAT THEY HAVE QUERY NAME APPENDED
+            cached[key] = this.getFromCache(key);
+          }
+        }
+      } else if (operationType === 'mutation') {
+      } else {
+      }
     } else {
-      const results = await graphql({
-        schema: this.schema,
-        source: this.graphQLQuery,
-      });
-      this.redisCache.set(this.graphQLQuery, JSON.stringify(results));
-      console.log(results);
-      res.locals.data = results;
-      return next();
+      if (
+        (await this.redisCache.exists(this.graphQLQuery)) &&
+        operationType === 'query'
+      ) {
+        const response = await this.redisCache.get(this.graphQLQuery);
+        res.locals.data = JSON.parse(response);
+        return next();
+      } else {
+        const results = await graphql({
+          schema: this.schema,
+          source: this.graphQLQuery,
+        });
+
+        if (operationType === 'mutation') {
+          this.redisCache.flushAll();
+          return next();
+        }
+
+        this.redisCache.set(this.graphQLQuery, JSON.stringify(results));
+        console.log(results);
+        res.locals.data = results;
+        return next();
+      }
     }
   }
 
@@ -98,6 +152,20 @@ class EmberQL {
   //       if (err.code === 'ECONNREFUSED') this.increaseTTL();
   //     });
   // }
+
+  getFromCache = async (key: string): Promise<any> => {
+    const redisResponse = await this.redisCache.hget(key);
+    if (redisResponse === null) return null;
+    return await Object.keys(redisResponse).reduce(async (curr, el) => {
+      if (redisResponse[el]?.__ref)
+        return Object.assign(curr, {
+          el: redisResponse[el].__ref.map(
+            async (ref: string) => await this.getFromCache(ref)
+          ),
+        });
+      else return Object.assign(curr, { el: redisResponse[el] });
+    }, {});
+  };
 
   async increaseTTL() {
     console.log('TTL increased on all KEYS');

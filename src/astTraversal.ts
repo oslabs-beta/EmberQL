@@ -7,6 +7,8 @@ import {
   StringValueNode,
   visit,
   print,
+  execute,
+  graphql,
 } from 'graphql';
 import schema from '/Users/Home/codesmith/EmberQL/demo/server/schema/schema';
 
@@ -33,7 +35,7 @@ export const traverse = (
     return {
       redisKeys,
       queryFields,
-      ast: visit(ast, {
+      modifiedAST: visit(ast, {
         Field: {
           enter(node, key, parent) {
             if (node.arguments) {
@@ -262,3 +264,4 @@ const fieldsMap = generateFieldsMap(schema);
 console.log(fieldsMap);
 //console.log(print(traverse(ast, fieldsMap, queryMap).ast));
 console.log(traverse(ast, fieldsMap, queryMap).redisKeys);
+//console.log(execute(schema, parse(`{__typename}`)));

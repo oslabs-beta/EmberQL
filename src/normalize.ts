@@ -17,7 +17,7 @@ const generateKey = (typename: string, id: string): string => {
   return typename + '#' + id;
 };
 //input: JSON.parse(graphQLResponse)
-const normalizeResponse = (parsedResponse: { [x: string]: any }) => {
+export const normalizeResponse = (parsedResponse: { [x: string]: any }) => {
   const refObj: { [x: string]: any } = {};
 
   const helper = (parsedResponse: { [x: string]: any }) => {

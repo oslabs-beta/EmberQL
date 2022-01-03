@@ -1,4 +1,4 @@
-import { graphql, GraphQLSchema } from '../demo/node_modules/graphql';
+import { graphql, GraphQLSchema } from 'graphql';
 import * as express from 'express';
 const redis = require('redis');
 const fetch = require('node-fetch');
