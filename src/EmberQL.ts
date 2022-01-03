@@ -5,7 +5,8 @@ const fetch = require('node-fetch');
 
 import { generateFieldsMap, generateQueryMap } from './maps';
 import { traverse } from './astTraversal';
-import { OperationDefinitionNode, parse } from 'graphql';
+import { OperationDefinitionNode, parse, print } from 'graphql';
+import { normalizeResponse } from './normalize';
 
 class EmberQL {
   redisClient: any;
@@ -68,12 +69,26 @@ class EmberQL {
 
       if (operationType === 'query') {
         const cached: { [queryName: string]: any } = {};
+        let missing = false;
         for (const key of redisKeys) {
           const value = this.getFromCache(key);
-          if (value === null) break;
+          if (value === null) {
+            missing = true;
+            break;
+          }
+          //make full query if any keys missing
           else {
             // NEED TO REFACTOR KEY SO THAT THEY HAVE QUERY NAME APPENDED
-            cached[key] = this.getFromCache(key);
+            cached[key] = value;
+          }
+          if (missing) {
+            const response = await graphql(this.schema, print(modifiedAST));
+            // NEED TO FILTER OUT UNWANTED
+            const normalized = normalizeResponse(response);
+
+            //WRITE NORMALIZED TO CACHE;
+            //res.locals appending
+            //next
           }
         }
       } else if (operationType === 'mutation') {
