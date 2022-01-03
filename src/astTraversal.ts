@@ -11,39 +11,62 @@ import {
   visit,
   print,
 } from 'graphql';
+import schema from '/Users/Home/codesmith/EmberQL/demo/server/schema/schema';
 
-//gets all query fields and add missing query fields to ast. does not yet check or append __typename
-const getAllQueryFields = (
+import { generateFieldsMap, generateQueryMap } from './maps';
+
+//gets all query fields, add missing query fields and __typename to ast. does not yet check or append __typename
+const traverse = (
   ast: DocumentNode,
-  fieldMap: { [typename: string]: Set<string> }
-) => {
-  const queryFields = {};
+  fieldMap: { [typename: string]: Set<string> },
+  queryMap: { [queryName: string]: any }
+): any =>
+  // {
+  //   [queryFields: string]: { [queryName: string]: any },
+  //   [ast: string]: DocumentNode;
+  // }
+  {
+    const queryFields: { [queryName: string]: any } = {};
 
-  visit(ast, {
-    SelectionSet: {
-      enter(node, key, parent) {
-        const fields = new Set();
-        if ((parent as OperationDefinitionNode)?.kind === 'OperationDefinition')
-          return;
-        if (!node.selections) return;
+    return {
+      queryFields,
+      ast: visit(ast, {
+        SelectionSet: {
+          enter(node, key, parent) {
+            const fields = new Set();
+            if (
+              (parent as OperationDefinitionNode)?.kind ===
+              'OperationDefinition'
+            )
+              return;
+            if (!node.selections) return;
 
-        for (const selection of node.selections) {
-          if (selection.kind === 'Field') fields.add(selection.name.value);
-        }
-        queryFields[(parent as FieldNode).name.value] = fields;
+            for (const selection of node.selections) {
+              if (selection.kind === 'Field') fields.add(selection.name.value);
+            }
+            queryFields[(parent as FieldNode).name.value] = fields;
 
-        const missingFields = [];
-        for (const field of fieldMap[(parent as FieldNode).name.value]) {
-          if (!fields.has(field)) missingFields.push(field);
-        }
+            const missingFields = [];
+            const parentType = queryMap[(parent as FieldNode).name.value];
 
-        missingFields.map((field) => makeFieldNode(field));
-        return { ...node, selections: [...node.selections, ...missingFields] };
-      },
-    },
-  });
-  return queryFields;
-};
+            for (const field of fieldMap[parentType]) {
+              if (!fields.has(field)) missingFields.push(field);
+            }
+            //add typename
+            if (!fields.has('__typename')) missingFields.push('__typename');
+            const missingFieldNodes = missingFields.map((field) =>
+              makeFieldNode(field)
+            );
+            console.log(missingFieldNodes);
+            return {
+              ...node,
+              selections: [...node.selections, ...missingFieldNodes],
+            };
+          },
+        },
+      }),
+    };
+  };
 
 const addTypenameToQuery = (ast: DocumentNode): DocumentNode => {
   return visit(ast, {
@@ -71,7 +94,63 @@ const addTypenameToQuery = (ast: DocumentNode): DocumentNode => {
   });
 };
 
+//gets all query fields and add missing query fields to ast. does not yet check or append __typename
+const getAllQueryFields = (
+  ast: DocumentNode,
+  fieldMap: { [typename: string]: Set<string> },
+  queryMap: { [queryName: string]: any }
+): any =>
+  // {
+  //   [queryFields: string]: { [queryName: string]: any },
+  //   [ast: string]: DocumentNode;
+  // }
+  {
+    const queryFields: { [queryName: string]: any } = {};
+
+    return {
+      queryFields,
+      ast: visit(ast, {
+        SelectionSet: {
+          enter(node, key, parent) {
+            const fields = new Set();
+            if (
+              (parent as OperationDefinitionNode)?.kind ===
+              'OperationDefinition'
+            )
+              return;
+            if (!node.selections) return;
+
+            for (const selection of node.selections) {
+              if (selection.kind === 'Field') fields.add(selection.name.value);
+            }
+            queryFields[(parent as FieldNode).name.value] = fields;
+
+            const missingFields = [];
+            //console.log(parent.type)
+            const parentType = queryMap[(parent as FieldNode).name.value];
+            console.log(parentType);
+            console.log(fieldsMap[parentType]);
+            for (const field of fieldMap[parentType]) {
+              console.log('asdfas');
+              if (!fields.has(field)) missingFields.push(field);
+            }
+            const missingFieldNodes = missingFields.map((field) =>
+              makeFieldNode(field)
+            );
+            console.log(missingFieldNodes);
+            return {
+              ...node,
+              selections: [...node.selections, ...missingFieldNodes],
+            };
+          },
+        },
+      }),
+    };
+  };
+
 //TODO fix typing of queryMap (here and in maps file)
+// how to address listtypes ? eg key getting made for '[Author]#3'
+// should query be a key when no id eg books?
 const getKeysFromQueryAST = (
   ast: DocumentNode,
   queryMap: { [queryName: string]: any }
@@ -89,6 +168,7 @@ const getKeysFromQueryAST = (
             const argumentWithID = selection.arguments.filter((argument) =>
               idVariants.has(argument.name.value)
             );
+            console.log('adsfaf');
             if (argumentWithID.length > 0) {
               const valueNode = argumentWithID[0].value as
                 | IntValueNode
@@ -118,3 +198,19 @@ const makeFieldNode = (fieldName: string): FieldNode => {
     },
   };
 };
+
+const query = `{
+  book(id:5){
+    id
+    authors {
+      id
+      name
+    }
+  }
+}`;
+const ast = parse(query);
+const queryMap = generateQueryMap(schema);
+const fieldsMap = generateFieldsMap(schema);
+console.log(fieldsMap);
+console.log(queryMap);
+console.log(print(traverse(ast, fieldsMap, queryMap).ast));

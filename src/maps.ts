@@ -9,25 +9,26 @@ import {
 
 //function to generate map from GQLObjectTypes in Schema to a set containing all fields of the object (eg book : Set[title, id, authors, genre, publisher, __typename])
 
-const generateFieldsMap = (
+const defaultTypes = new Set([
+  'String',
+  'Int',
+  'Float',
+  'Boolean',
+  'ID',
+  'Query',
+  '__Type',
+  '__Field',
+  '__EnumValue',
+  '__DirectiveLocation',
+  '__Schema',
+  '__TypeKind',
+  '__InputValue',
+  '__Directive',
+]);
+
+export const generateFieldsMap = (
   schema: GraphQLSchema
 ): { [typename: string]: Set<string> } => {
-  const defaultTypes = new Set([
-    'String',
-    'Int',
-    'Float',
-    'Boolean',
-    'ID',
-    'Query',
-    '__Type',
-    '__Field',
-    '__EnumValue',
-    '__DirectiveLocation',
-    '__Schema',
-    '__TypeKind',
-    '__InputValue',
-    '__Directive',
-  ]);
   const typeMap = schema.getTypeMap();
   const filteredMap = Object.keys(typeMap).filter(
     (type) => !defaultTypes.has(type)
@@ -37,21 +38,22 @@ const generateFieldsMap = (
     const typeObj = typeMap[type];
     const fields = (typeObj as GraphQLObjectType).getFields();
 
-    //fieldsMap[type] = new Set(Object.keys(fields));
+    fieldsMap[type] = new Set(Object.keys(fields));
 
     //new implementation to account for GraphQLListTypes
-    fieldsMap[type] = new Set();
-    for (const field in fields) {
-      //TODO fix typing of typeName
-      // check if type is a list type or graphqlobjecttype
+    // fieldsMap[type] = new Set();
+    // for (const field in fields) {
+    //   //TODO fix typing of typeName
+    //   // check if type is a list type or graphqlobjecttype
 
-      const typeName: any = fields[field].type;
-      if (typeName.ofType) {
-        fieldsMap[type].add(typeName.ofType.name);
-      } else {
-        fieldsMap[type].add(typeName.name);
-      }
-    }
+    //   const typeName: any = fields[field].type;
+    //   if (typeName.ofType) {
+    //     fieldsMap[type].add(typeName.ofType.name);
+    //   } else {
+    //     if (defaultTypes.has(typeName.name)) fieldsMap[type].add(field);
+    //     else fieldsMap[type].add(typeName.name);
+    //   }
+    //}
   }
   return fieldsMap;
 };
@@ -62,12 +64,16 @@ const getQueriesFromSchema = (schema: GraphQLSchema) => {
 };
 
 //generates map that maps from query names to return value of GraphQLObjectTypes
-const generateQueryMap = (schema: GraphQLSchema) => {
+export const generateQueryMap = (
+  schema: GraphQLSchema
+): { [queryName: string]: any } => {
   const queryList = schema.getQueryType()?.getFields(); // is a map, not a list/array
   const queryMap: { [queryName: string]: any } = {};
   for (const query in queryList) {
-    //TODO add check for graphqllisttype
-    queryMap[query] = queryList[query].type;
+    //check for graphqllisttype
+    const typeName: any = queryList[query].type;
+    if (typeName.ofType) queryMap[query] = typeName.ofType.name;
+    else queryMap[query] = queryList[query].type;
   }
   return queryMap;
 };
