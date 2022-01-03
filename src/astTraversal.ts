@@ -1,9 +1,6 @@
 import {
   DocumentNode,
   FieldNode,
-  getNamedType,
-  GraphQLObjectType,
-  GraphQLSchema,
   IntValueNode,
   OperationDefinitionNode,
   parse,
@@ -18,7 +15,7 @@ import { generateFieldsMap, generateQueryMap } from './maps';
 //gets all query fields, add missing query fields and __typename to ast. does not yet check or append __typename
 const traverse = (
   ast: DocumentNode,
-  fieldMap: { [typename: string]: Set<string> },
+  fieldMap: { [typename: string]: any },
   queryMap: { [queryName: string]: any }
 ): any =>
   // {
@@ -27,7 +24,8 @@ const traverse = (
   // }
   {
     const queryFields: { [queryName: string]: any } = {};
-
+    const rels: { [queryName: string]: any } = {};
+    const defaultTypes = new Set(['String', 'Int', 'Float', 'Boolean', 'ID']);
     return {
       queryFields,
       ast: visit(ast, {
@@ -44,19 +42,36 @@ const traverse = (
             for (const selection of node.selections) {
               if (selection.kind === 'Field') fields.add(selection.name.value);
             }
-            queryFields[(parent as FieldNode).name.value] = fields;
+            const parentName = (parent as FieldNode).name.value;
+            queryFields[parentName] = fields;
 
-            const missingFields = [];
-            const parentType = queryMap[(parent as FieldNode).name.value];
-
-            for (const field of fieldMap[parentType]) {
-              if (!fields.has(field)) missingFields.push(field);
+            const missingFieldNodes = [];
+            const parentType =
+              fieldMap[parentName] ??
+              rels[parentName] ??
+              queryMap[parentName] ??
+              {};
+            for (const field in fieldMap[parentType]) {
+              const fieldObj = fieldMap[parentType][field];
+              if (!fields.has(fieldObj.name)) {
+                //check if added field type is default or nested(ID vs Book)
+                console.log(typeof fieldObj.type);
+                console.log(fieldObj.type.name);
+                if (defaultTypes.has(fieldObj.type.name))
+                  missingFieldNodes.push(makeFieldNode(fieldObj.name));
+                else {
+                  rels[fieldObj.name] = fieldObj.type;
+                  missingFieldNodes.push(makeFieldNode(fieldObj.name, []));
+                }
+              }
             }
             //add typename
-            if (!fields.has('__typename')) missingFields.push('__typename');
-            const missingFieldNodes = missingFields.map((field) =>
-              makeFieldNode(field)
-            );
+            if (!fields.has('__typename'))
+              missingFieldNodes.push(makeFieldNode('__typename'));
+            // const missingFieldNodes = missingFields.map((field) =>
+            //   makeFieldNode(field)
+            // );
+            if (rels[parentName]) delete rels[parentName];
             console.log(missingFieldNodes);
             return {
               ...node,
@@ -189,13 +204,23 @@ const generateKey = (typename: string, id: string): string => {
   return typename + '#' + id;
 };
 
-const makeFieldNode = (fieldName: string): FieldNode => {
+const makeFieldNode = (
+  fieldName: string,
+  selection?: Array<any>
+): FieldNode => {
   return {
     kind: 'Field',
     name: {
       kind: 'Name',
       value: fieldName,
     },
+    selectionSet:
+      selection === undefined
+        ? undefined
+        : {
+            kind: 'SelectionSet',
+            selections: selection,
+          },
   };
 };
 
@@ -211,6 +236,6 @@ const query = `{
 const ast = parse(query);
 const queryMap = generateQueryMap(schema);
 const fieldsMap = generateFieldsMap(schema);
-console.log(fieldsMap);
-console.log(queryMap);
+// console.log(fieldsMap);
+// console.log(queryMap);
 console.log(print(traverse(ast, fieldsMap, queryMap).ast));

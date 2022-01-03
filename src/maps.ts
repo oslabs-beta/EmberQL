@@ -28,18 +28,18 @@ const defaultTypes = new Set([
 
 export const generateFieldsMap = (
   schema: GraphQLSchema
-): { [typename: string]: Set<string> } => {
+): { [typename: string]: any } => {
   const typeMap = schema.getTypeMap();
   const filteredMap = Object.keys(typeMap).filter(
     (type) => !defaultTypes.has(type)
   );
-  const fieldsMap: { [typename: string]: Set<string> } = {};
+  const fieldsMap: { [typename: string]: any } = {};
   for (const type of filteredMap) {
     const typeObj = typeMap[type];
     const fields = (typeObj as GraphQLObjectType).getFields();
 
-    fieldsMap[type] = new Set(Object.keys(fields));
-
+    //fieldsMap[type] = new Set(Object.keys(fields));
+    fieldsMap[type] = fields;
     //new implementation to account for GraphQLListTypes
     // fieldsMap[type] = new Set();
     // for (const field in fields) {
