@@ -1,0 +1,41 @@
+.why {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+#section-title {
+  font-size: 7vw;
+  font-family: 'Red Hat Display', sans-serif;
+  font-weight: 400;
+}
+.reason-container {
+  display: flex;
+  flex-direction: column;
+}
+.single-reason {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  margin-left: 4vw;
+  margin-right: 4vw;
+}
+.reason-img {
+  border-radius: 50%;
+  box-shadow: 5px 7px 14px black;
+  display: flex;
+}
+.reason-description {
+  font-family: 'Red Hat Display', sans-serif;
+  margin-left: 4vw;
+  margin-right: 4vw;
+  display: flex;
+}
+
+@media (max-width: 900px) {
+  .single-reason {
+    flex-direction: column !important;
+  }
+  .reason-img {
+    margin-top: 40px;
+  }
+}

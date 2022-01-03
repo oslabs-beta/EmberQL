@@ -1,0 +1,40 @@
+#section-title {
+  font-size: 7vw;
+  font-family: 'Red Hat Display', sans-serif;
+  font-weight: 400;
+}
+
+.features {
+  background-color: #2c394b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.feature-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.single-feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-family: 'Red Hat Display', sans-serif;
+}
+
+.feature-img {
+  border-radius: 50%;
+  box-shadow: 5px 7px 14px black;
+  /* max-width: 100%; */
+  /* width: auto;
+  height: auto; */
+}
+
+@media (max-width: 900px) {
+  .feature-container {
+    flex-direction: column;
+  }
+}

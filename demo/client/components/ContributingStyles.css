@@ -1,0 +1,21 @@
+#section-title {
+  font-size: 7vw;
+  min-block-size: 40px;
+  font-family: 'Red Hat Display', sans-serif;
+  font-weight: 400;
+}
+.contributing-container {
+  background-color: #082032;
+
+  margin: 0;
+  padding: 10% 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.contributing-description {
+  max-width: 600px;
+  text-align: center;
+}

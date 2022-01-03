@@ -2,7 +2,11 @@
 /* Blue-Gray Accent #2C394B */
 /* Gray #334756 */
 /* Ember #FF4C29 */
-
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
 body {
   background-color: #334756;
   color: white;
@@ -47,7 +51,7 @@ body {
   margin: 20px;
   width: 300px;
   border: none;
-  background-color: #FF4C29;
+  background-color: #ff4c29;
   color: black;
   height: 100px;
   font-size: 34px;
