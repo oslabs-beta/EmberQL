@@ -6,7 +6,7 @@ const fetch = require('node-fetch');
 import { generateFieldsMap, generateQueryMap } from './maps';
 import { traverse } from './astTraversal';
 import { OperationDefinitionNode, parse, print } from 'graphql';
-import { normalizeResponse } from './normalize';
+import { normalizeResponse, filter } from './normalize';
 
 class EmberQL {
   redisClient: any;
@@ -84,17 +84,44 @@ class EmberQL {
           if (missing) {
             const response = await graphql(this.schema, print(modifiedAST));
             // NEED TO FILTER OUT UNWANTED
-            const normalized = normalizeResponse(response);
+            //Might need to may copy of response here so we can cache the full response
+            //make deep copy of response
+            const filteredResponse = JSON.parse(JSON.stringify(response));
 
+            filter(
+              filteredResponse,
+              new Set(Object.keys(queryFields.data ?? queryFields)),
+              queryFields
+            );
+
+            res.locals.query = filteredResponse;
+            const normalized = normalizeResponse(response);
             //WRITE NORMALIZED TO CACHE;
-            //res.locals appending
-            //next
+            return next();
           }
         }
       } else if (operationType === 'mutation') {
+        const response = await graphql(this.schema, print(modifiedAST));
+        const normalizedResponse = normalizeResponse(response);
+        /*
+        iterate through response
+          check redis for key
+            if not in there write to cache
+            if in cache get from cache
+              if value of normalizedResponse[key] === value from cache
+                delete from cache
+                  get return from cache and iteratively remove references
+              if not update cache at key
+        */
+        //filter response and send to front end
       } else {
+        const response = await graphql(this.schema, this.graphQLQuery);
+        res.locals.query = response;
+        return next();
       }
-    } else {
+    }
+    //NON NORMALIZED
+    else {
       if (
         (await this.redisCache.exists(this.graphQLQuery)) &&
         operationType === 'query'

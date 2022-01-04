@@ -171,7 +171,7 @@ const getAllQueryFields = (
             queryFields[(parent as FieldNode).name.value] = fields;
 
             const missingFields = [];
-            //console.log(parent.type)
+
             const parentType = queryMap[(parent as FieldNode).name.value];
             for (const field of fieldMap[parentType]) {
               if (!fields.has(field)) missingFields.push(field);
@@ -209,7 +209,6 @@ export const getKeysFromQueryAST = (
             const argumentWithID = selection.arguments.filter((argument) =>
               idVariants.has(argument.name.value)
             );
-            console.log('adsfaf');
             if (argumentWithID.length > 0) {
               const valueNode = argumentWithID[0].value as
                 | IntValueNode
@@ -264,4 +263,6 @@ const fieldsMap = generateFieldsMap(schema);
 console.log(fieldsMap);
 //console.log(print(traverse(ast, fieldsMap, queryMap).ast));
 console.log(traverse(ast, fieldsMap, queryMap).redisKeys);
+console.log(print(traverse(ast, fieldsMap, queryMap).modifiedAST));
+console.log(traverse(ast, fieldsMap, queryMap).queryFields);
 //console.log(execute(schema, parse(`{__typename}`)));

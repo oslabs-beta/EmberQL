@@ -185,3 +185,25 @@ const normalized = normalizeResponse(JSON.stringify(fullResponse))
 //how to minimize attempting to recache???
 
 */
+
+export const filter = (
+  obj: { [key: string]: any },
+  set: Set<string>,
+  queryFields: { [queryName: string]: any }
+) => {
+  for (const key in obj) {
+    if (!set.has(key)) delete obj[key];
+    if (queryFields[key]) {
+      if (Array.isArray(obj[key])) {
+        obj[key] = obj[key].map((object: { [key: string]: any }) =>
+          filter(object, queryFields[key], queryFields)
+        );
+      } else if (typeof obj[key] === 'object')
+        filter(obj[key], queryFields[key], queryFields);
+      else {
+        // ?????
+        continue;
+      }
+    }
+  }
+};
