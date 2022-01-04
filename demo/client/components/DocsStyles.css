@@ -1,12 +1,14 @@
-.section-title {
-  font-size: 8em;
+#section-title {
+  font-size: 7vw;
   font-family: 'Red Hat Display', sans-serif;
-  font-weight: 200;
+  font-weight: 400;
 }
 
 .link {
-  font-size: 3em;
+  font-size: 4vw;
   font-family: 'Red Hat Display', sans-serif;
+  color: #ff4c29;
+  margin-bottom: 10px;
 }
 
 .github {
@@ -15,6 +17,7 @@
   flex-direction: column;
 }
 
-.read-me {
-  display: flex;
+img {
+  width: 98%;
+  /* margin: 1%; */
 }

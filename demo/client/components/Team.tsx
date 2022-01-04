@@ -1,49 +1,60 @@
 import React from 'react';
 import TeamMember from './TeamMember';
 import './TeamStyles.css';
-
+import cristian from './assets/cristian.png';
+import mike from './assets/mike.png';
+import manju from './assets/manju.png';
+import tyler from './assets/tyler.png';
 
 function Team() {
   const teamArray = [
     {
-      img: 'http://placecorgi.com/300/300/',
+      img: cristian,
       description: `Christian De Los Rios`,
+      github: 'https://www.github.com/',
     },
     {
-      img: 'http://placecorgi.com/299/299/',
+      img: mike,
       description: `Mike Masatsugu`,
+      github: 'https://www.github.com/',
     },
     {
-      img: 'http://placecorgi.com/301/301/',
+      img: manju,
       description: `Manjunath Pattanashetty`,
+      github: 'https://www.github.com/',
     },
     {
       img: 'http://placecorgi.com/301/302/',
       description: `Ram Marimuthu`,
+      github: 'https://www.github.com/',
     },
     {
-      img: 'http://placecorgi.com/301/303/',
+      img: tyler,
       description: `Tyler Pohn`,
+      github: 'https://www.github.com/',
     },
   ];
   return (
     <div className='team-container'>
-      <h2 id='section-title'>Meet The Team</h2>
+      <h2 id='section-title-team'>Meet The Team</h2>
 
       <div className='team-1'>
         <TeamMember
           img={teamArray[0].img}
           description={teamArray[0].description}
+          github={teamArray[0].github}
           key={`member-1`}
         />
         <TeamMember
           img={teamArray[1].img}
           description={teamArray[1].description}
+          github={teamArray[0].github}
           key={`member-2`}
         />
         <TeamMember
           img={teamArray[2].img}
           description={teamArray[2].description}
+          github={teamArray[0].github}
           key={`member-3`}
         />
       </div>
@@ -51,11 +62,13 @@ function Team() {
         <TeamMember
           img={teamArray[3].img}
           description={teamArray[3].description}
+          github={teamArray[0].github}
           key={`member-4`}
         />
         <TeamMember
           img={teamArray[4].img}
           description={teamArray[4].description}
+          github={teamArray[0].github}
           key={`member-5`}
         />
       </div>
