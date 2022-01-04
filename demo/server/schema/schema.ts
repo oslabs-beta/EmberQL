@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import db from '../models/db.js';
+import db from '../models/db';
 
 import {
   GraphQLSchema,
