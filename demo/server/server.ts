@@ -6,7 +6,7 @@ import schema from './schema/schema';
 import cors from 'cors';
 const app = express();
 const PORT = 3000;
-import EmberQL from '../../src/EmberQL_old';
+import EmberQL from '../../src/EmberQL';
 app.use(cors());
 
 const redis = require('redis');

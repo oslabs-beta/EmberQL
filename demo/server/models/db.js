@@ -14,7 +14,7 @@ const db = {
     return pool.query(queryString, params, callback);
   },
 };
-export default db;
+module.exports = db;
 /*
 https://riptutorial.com/sql/example/4978/library-database
 

@@ -7,23 +7,23 @@ function Team() {
   const teamArray = [
     {
       img: 'http://placecorgi.com/300/300/',
-      description: `Christian De Los Rios`,
+      description: 'Cristian De Los Rios',
     },
     {
       img: 'http://placecorgi.com/299/299/',
-      description: `Mike Masatsugu`,
+      description: 'Mike Masatsugu',
     },
     {
       img: 'http://placecorgi.com/301/301/',
-      description: `Manjunath Pattanashetty`,
+      description: 'Manjunath Pattanashetty',
     },
     {
       img: 'http://placecorgi.com/301/302/',
-      description: `Ram Marimuthu`,
+      description: 'Ram Marimuthu',
     },
     {
       img: 'http://placecorgi.com/301/303/',
-      description: `Tyler Pohn`,
+      description: 'Tyler Pohn',
     },
   ];
   return (
@@ -34,29 +34,29 @@ function Team() {
         <TeamMember
           img={teamArray[0].img}
           description={teamArray[0].description}
-          key={`member-1`}
+          key={'member-1'}
         />
         <TeamMember
           img={teamArray[1].img}
           description={teamArray[1].description}
-          key={`member-2`}
+          key={'member-2'}
         />
         <TeamMember
           img={teamArray[2].img}
           description={teamArray[2].description}
-          key={`member-3`}
+          key={'member-3'}
         />
       </div>
       <div className='team-2'>
         <TeamMember
           img={teamArray[3].img}
           description={teamArray[3].description}
-          key={`member-4`}
+          key={'member-4'}
         />
         <TeamMember
           img={teamArray[4].img}
           description={teamArray[4].description}
-          key={`member-5`}
+          key={'member-5'}
         />
       </div>
     </div>

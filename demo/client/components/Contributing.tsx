@@ -1,7 +1,7 @@
 import React from 'react';
 import './ContributingStyles.css';
 
-const description: string = `
+const description = `
 Thank you for considering contributing to EmberQL's codebase!
 If you'd like to help us maintain and update EmberQL, please understand that all of your contributions will fall under EmberQL's MIT license.\n \n 
 
