@@ -10,7 +10,7 @@ import {
   execute,
   graphql,
 } from 'graphql';
-import schema from '/Users/Home/codesmith/EmberQL/demo/server/schema/schema';
+import schema from '../demo/server/schema/schema';
 
 import { generateFieldsMap, generateQueryMap } from './maps';
 
@@ -258,10 +258,46 @@ const query = `{
     }
   }
 }`;
+const response = {
+  book : [{
+    id: 5,
+    __typename: 'Book',
+    title: 'asdf',
+    authors: [
+      { id: 2,
+        name: 'asdfas',
+        country: 'asdfasdf'
+      }
+    ],
+    genre:{
+      id: 'asdfasd',
+      name: 'asdfas'
+    }
+  }]
+}
+//const queryFields = { book: Set { 'id', 'genre' }, genre: Set { 'id' }, authors: Set {} }
 const ast = parse(query);
 const queryMap = generateQueryMap(schema);
 const fieldsMap = generateFieldsMap(schema);
-console.log(fieldsMap);
+//console.log(fieldsMap); //{ book: Set { 'id', 'genre' }, genre: Set { 'id' }, authors: Set {} }
 //console.log(print(traverse(ast, fieldsMap, queryMap).ast));
-console.log(traverse(ast, fieldsMap, queryMap).redisKeys);
+//console.log(traverse(ast, fieldsMap, queryMap).queryFields); <-- this is the one you want
 //console.log(execute(schema, parse(`{__typename}`)));
+
+
+// const filter = (obj: {[key: string]: any}, set: Set<string>) => {
+//   for(const key in obj){
+//     if(!set.has(key)) delete obj[key]
+//     if(queryFields[key]){
+//       if(Array.isArray(obj[key])){
+//         obj[key] = obj[key].map((object) => filter(object, queryFields[key]))
+//       }
+//       else if(typeof obj[key] === 'object') obj[key] = filter(obj)
+//       else {
+//         // ?????
+
+//       }
+//     }
+//   }
+
+// }

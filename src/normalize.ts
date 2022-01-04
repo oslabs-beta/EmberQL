@@ -120,7 +120,9 @@ const response = {
   },
 };
 
-console.log(JSON.stringify(normalizeResponse(response)));
+//console.log(JSON.stringify(normalizeResponse(response)));
+
+
 // function checkId(query: string): string {
 //   const [start, end] = [query.indexOf(':') + 2, query.indexOf(')')]; //can return -1 if not found
 //   return query.slice(start, end) || 'err';

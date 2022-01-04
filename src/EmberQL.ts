@@ -7,6 +7,9 @@ import { generateFieldsMap, generateQueryMap } from './maps';
 import { traverse } from './astTraversal';
 import { OperationDefinitionNode, parse, print } from 'graphql';
 import { normalizeResponse } from './normalize';
+import schema from '../demo/server/schema/schema';
+import { query } from '../demo/server/models/db';
+//import { query } from '../demo/server/models/db';
 
 class EmberQL {
   redisClient: any;
@@ -32,7 +35,7 @@ class EmberQL {
     this.increaseTTL = this.increaseTTL.bind(this);
     this.getFromCache = this.getFromCache.bind(this);
 
-    this.graphQLQuery = '';
+    this.graphQLQuery = ``;
     this.schema = schema;
     this.queryMap = generateQueryMap(schema);
     this.fieldsMap = generateFieldsMap(schema);
@@ -43,18 +46,20 @@ class EmberQL {
     this.identifiers = identifiers;
   }
 
+ 
   async handleQuery(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
   ) {
-    this.graphQLQuery = req.body.query;
+    this.graphQLQuery = req.body.query; //<-- this is the original code
 
     //send to next middleware if there is no query
-    if (this.graphQLQuery === undefined) return next();
+    if (this.graphQLQuery === undefined) return next(); //<-- this is the original code
 
+   // const ast = parse(this.graphQLQuery); <-- this is the original code
+ 
     const ast = parse(this.graphQLQuery);
-
     //TODO add operationType fetching to traverse method
     const operationType = (ast.definitions[0] as OperationDefinitionNode)
       .operation;
@@ -81,16 +86,70 @@ class EmberQL {
             // NEED TO REFACTOR KEY SO THAT THEY HAVE QUERY NAME APPENDED
             cached[key] = value;
           }
+        }
           if (missing) {
-            const response = await graphql(this.schema, print(modifiedAST));
-            // NEED TO FILTER OUT UNWANTED
-            const normalized = normalizeResponse(response);
+            const response:any  = await graphql(this.schema, print(modifiedAST));
+            // NEED TO FILTER OUT UNWANTEDFIELDS
+            const filter = (obj: {[key: string]: any}, set: Set<string>) => {
+              for(const key in obj){
+                if(!set.has(key)) delete obj[key]
+                if(queryFields[key]){
+                  if(Array.isArray(obj[key])){
+                    obj[key] = obj[key].map((object:{[key: string]: any}) => filter(object, queryFields[key]))
+                  }
+                  else if(typeof obj[key] === 'object') filter(obj[key], queryFields[key])
+                  else {
+                    // ?????
+                    continue
+                  }
+                }
+              }
+            
+            }
+            //Might need to may copy of response here so we can cache the full response
+            //make deep copy of response
+            const filteredResponse = JSON.parse(JSON.stringify(response))
+         
+            filter(filteredResponse, new Set(Object.keys(queryFields.data ?? queryFields)));
+            
+            // const filtered: {[x: string]:any} = {};
+            // for(const field in response){
+            //     console.log("testing" + field);
 
+            //     const newArr: Array<any> = [];
+            //     for(const item of response[field]){
+            //         newArr.push(item);
+            //     }
+            //     filtered[field] = newArr;
+            // }
+
+                // if(Array.isArray(response[field])){
+                //     filtered[field] = response[field].map((item:any)=>{
+                //         const filteredItem:{[x: string]:any} = {};
+                //         for(const field in item){
+                //             if(this.fieldsMap[field]){
+                //                 filteredItem[field] = item[field]
+                         
+                //             }
+                //         }
+                //         return filteredItem;
+                //     })
+
+          
+
+            const normalized = normalizeResponse(response);
+            for(const key in normalized){
+              //hset
+            }
             //WRITE NORMALIZED TO CACHE;
             //res.locals appending
-            //next
+            res.locals.query = filteredResponse
+            return next()
+          } else{
+            res.locals.query = cached
+            return next()
           }
-        }
+        
       } else if (operationType === 'mutation') {
       } else {
       }
@@ -204,5 +263,10 @@ class EmberQL {
     next();
   }
 }
+
+
+
+
+
 
 export default EmberQL;

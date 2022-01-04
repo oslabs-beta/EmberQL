@@ -25,5 +25,8 @@
     "graphql": "^15.7.2",
     "node-fetch": "^2.6.6",
     "redis": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^3.0.3"
   }
 }
