@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface ReasonProps {
-  img: string;
+  img: any;
   description: string;
   style: React.CSSProperties;
 }

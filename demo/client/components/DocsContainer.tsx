@@ -15,8 +15,8 @@ function DocsContainer() {
           id='docs-pic'
           src={pic}
           alt='Github Readme'
-          height='100%'
-          width='100%'
+          // height='100%'
+          // width='100%'
         />
       </div>
     </div>

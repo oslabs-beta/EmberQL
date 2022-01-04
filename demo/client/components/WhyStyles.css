@@ -23,6 +23,8 @@
   border-radius: 50%;
   box-shadow: 5px 7px 14px black;
   display: flex;
+  height: 300px;
+  width: 300px;
 }
 .reason-description {
   font-family: 'Red Hat Display', sans-serif;
@@ -37,5 +39,7 @@
   }
   .reason-img {
     margin-top: 40px;
+    height: 300px;
+    width: 300px;
   }
 }

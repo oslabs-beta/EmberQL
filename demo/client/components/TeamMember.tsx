@@ -4,14 +4,25 @@ interface TeamMemberProps {
   img: any;
   description: string;
   github: string;
+  linkedin: string;
 }
 
-const TeamMember = function ({ img, description, github }: TeamMemberProps) {
+const TeamMember = function ({
+  img,
+  description,
+  github,
+  linkedin,
+}: TeamMemberProps) {
   return (
     <div className='single-member'>
       <img src={img} className='member-img' />
       <p className='member-description'>{description}</p>
-      <p className='member-github'>{github}</p>
+      <a href={github} className='team-link'>
+        Github
+      </a>
+      <a href={linkedin} className='team-link'>
+        Linkedin
+      </a>
     </div>
   );
 };
