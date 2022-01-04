@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+//const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   mode: process.env.NODE_ENV,
@@ -14,11 +14,11 @@ module.exports = {
   },
   devServer: {
     port: 8080,
-    publicPath: '/build/',
-   
+    publicPath: '/',
+    //contentBase: './client/src',
 
     proxy: {
-      '*/': 'http://localhost:3000/',
+      '/': 'http://localhost:3000',
     },
     hot: true,
     historyApiFallback: true,
@@ -61,10 +61,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './index.html',
     }),
-    new MiniCssExtractPlugin({
-      filename: 'styles.css',
-      chunkFilename: 'styles.css',
-     
-    }),
+    // new MiniCssExtractPlugin({
+    //    filename: "styles.css",
+    //   // chunkFilename: "styles.css",
+    //   //filename: "[name].[contenthash].css",
+    // }),
   ],
 };

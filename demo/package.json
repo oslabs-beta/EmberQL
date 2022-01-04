@@ -2,11 +2,11 @@
   "name": "emberql",
   "version": "1.0.0",
   "description": "Demo for EmberQL",
-  "main": "build/server/server.js",
+  "main": "index.tsx",
   "scripts": {
     "lint": "eslint . --ext .ts",
-    "start": "cross-env NODE_ENV=production webpack serve --open",
-    "build": "cross-env NODE_ENV=production webpack ",
+    "start": "NODE_ENV=production node server/server.ts",
+    "build": "cross-env NODE_ENV=production webpack",
     "dev": "concurrently \"cross-env NODE_ENV=development webpack serve --open --hot\" \"cross-env NODE_ENV=development nodemon server/server.ts --ignore '*.json'\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
