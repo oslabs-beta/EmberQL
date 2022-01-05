@@ -19,6 +19,7 @@ EmberQL is an intuitive, lightweight Node module that facilitates caching data f
 ## Installation & Prerequisites
 You can install the EmberQL module into your Node.js application by running the command npm install emberql. Your application must have GraphQL and as a dependency, and you will need to define your schema so that EmberQL can make use of it. You will also need Redis as a dependency to access the Redis functions (createClient, connect, on, etc.) and you will need to either run a Redis server on your machine locally or utilize AWS Elasticache to run a Redis server. 
 ## Implementation
+You
 The EmberQL class will take your GraphQL schema and your Redis cache instance as arguments:
 ```
 const Ember = new EmberQL(schema, redisCache);
@@ -35,7 +36,7 @@ app.use('/clearCache', Ember.clearCache, (req, res) => {
   res.sendStatus(202);
 });
 ```
-##Features in Production
+## Features in Production
 Data normalization for Redis caching is currently in our development pipeline. The prototype utilizes a recursive function to parse the GraphQL AST and transform queries into key value pairs utilizing hashing to optimize memory. 
 
 ## EmberQL Engineering Team
