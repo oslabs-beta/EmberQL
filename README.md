@@ -1,6 +1,6 @@
 # EmberQL
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/open-source-labs/Quell/blob/master/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/oslabs-beta/EmberQL/blob/dev/LICENSE)
 ## What is EmberQL?
 
 EmberQL is an intuitive Node module that facilitates caching data from GraphQL queries, and implements a dynamic data persistence system that monitors the status of the primary database.
