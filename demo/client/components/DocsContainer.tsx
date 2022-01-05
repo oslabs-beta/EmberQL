@@ -4,8 +4,6 @@ import './DocsStyles.css';
 import pic from './assets/githubReadme.png';
 
 function DocsContainer() {
-  const text: string =
-    '# EmberQL\n\n[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/open-source-labs/Quell/blob/master/LICENSE)\n## What is EmberQL? \n\nEmberQL is an intuitive Node module that facilitates caching data from GraphQL queries, and implements a dynamic data persistence system that monitors the status of the primary database.\n## Features\n\n - Server-side caching w/ Redis to decrease query times\n- Dynamic cache invalidation\n- Data persistence system utilizing **RDB** (Redis Database) and **AOF** (Append Only File)\n\n## Installation & Prerequisites\n\n## Documentation\n\n## EmberQL Engineering Team\n\n[Cristian De Los Rios](https://github.com/Cristian-DeLosRios) |\n[Manjunath Ajjappa Pattanashetty](https://github.com/manjunathap85) |\n[Mike Masatsugu](https://github.com/mikemasatsugu) |\n[Ram Marimuthu](https://github.com/rammarimuthu) |\n[Tyler Pohn](https://github.com/tylerpohn)';
   return (
     <div className='github'>
       <h2 id='section-title'>Docs</h2>
@@ -15,7 +13,7 @@ function DocsContainer() {
       <div className='html'>
         <h1 id='emberql'>EmberQL</h1>
         <p>
-          <a href='https://github.com/open-source-labs/Quell/blob/master/LICENSE'>
+          <a href='https://github.com/oslabs-beta/EmberQL/blob/dev/LICENSE'>
             <img
               src='https://img.shields.io/badge/License-MIT-yellow.svg'
               alt='License: MIT'
