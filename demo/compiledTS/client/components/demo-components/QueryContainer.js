@@ -28,7 +28,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-/* eslint-disable no-console */
 const react_1 = __importStar(require("react"));
 const QueryContainer = function ({ setTimesArray, timesArray, }) {
     const [query, setQuery] = (0, react_1.useState)('');

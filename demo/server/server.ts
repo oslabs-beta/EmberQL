@@ -5,7 +5,7 @@ import { graphqlHTTP } from 'express-graphql';
 import schema from './schema/schema';
 import cors from 'cors';
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 import EmberQL from '../EmberQL';
 app.use(cors());
 

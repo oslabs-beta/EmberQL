@@ -12,13 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-/* eslint-disable no-use-before-define */
-/* eslint-disable @typescript-eslint/no-use-before-define */
 const db_js_1 = __importDefault(require("../models/db.js"));
 const graphql_1 = require("graphql");
-// =========================== //
-// ===== TYPE DEFINITIONS ==== //
-// =========================== //
 const BookType = new graphql_1.GraphQLObjectType({
     name: 'Book',
     fields: () => ({
@@ -71,13 +66,9 @@ const GenreType = new graphql_1.GraphQLObjectType({
         name: { type: graphql_1.GraphQLString },
     }),
 });
-// ================== //
-// ===== QUERIES ==== //
-// ================== //
 const RootQuery = new graphql_1.GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
-        //GET BOOK BY ID
         book: {
             type: BookType,
             args: { id: { type: graphql_1.GraphQLID } },
@@ -92,7 +83,6 @@ const RootQuery = new graphql_1.GraphQLObjectType({
                 });
             },
         },
-        //GET ALL BOOKS
         books: {
             type: new graphql_1.GraphQLList(BookType),
             resolve() {
@@ -105,7 +95,6 @@ const RootQuery = new graphql_1.GraphQLObjectType({
                 });
             },
         },
-        //GET AUTHOR BY ID
         author: {
             type: AuthorType,
             args: { id: { type: graphql_1.GraphQLID } },
@@ -121,7 +110,6 @@ const RootQuery = new graphql_1.GraphQLObjectType({
                 });
             },
         },
-        //GET ALL AUTHORS
         authors: {
             type: new graphql_1.GraphQLList(AuthorType),
             resolve() {
@@ -132,7 +120,6 @@ const RootQuery = new graphql_1.GraphQLObjectType({
                 });
             },
         },
-        //GET ALL BOOKS BY AUTHOR
         booksByAuthor: {
             type: new graphql_1.GraphQLList(BookType),
             args: { name: { type: graphql_1.GraphQLString } },
@@ -150,7 +137,6 @@ const RootQuery = new graphql_1.GraphQLObjectType({
                 });
             },
         },
-        //GET ALL GENRES
         genres: {
             type: new graphql_1.GraphQLList(GenreType),
             resolve() {
@@ -161,7 +147,6 @@ const RootQuery = new graphql_1.GraphQLObjectType({
                 });
             },
         },
-        //GET ALL BOOKS BY GENRE
         booksByGenre: {
             type: new graphql_1.GraphQLList(BookType),
             args: { genre: { type: graphql_1.GraphQLString } },
@@ -180,13 +165,9 @@ const RootQuery = new graphql_1.GraphQLObjectType({
         },
     },
 });
-// ================== //
-// ===== MUTATIONS ==== //
-// ================== //
 const RootMutation = new graphql_1.GraphQLObjectType({
     name: 'RootMutationType',
     fields: {
-        //ADD BOOK
         addBook: {
             type: BookType,
             args: {
@@ -198,8 +179,6 @@ const RootMutation = new graphql_1.GraphQLObjectType({
                 return __awaiter(this, void 0, void 0, function* () {
                     const author = yield db_js_1.default.query(`SELECT id FROM authors WHERE name = '${args.author}'`);
                     const genre = yield db_js_1.default.query(`SELECT id FROM genres WHERE genres.name = '${args.genre}'`);
-                    //const authorId: string = author.rows[0].id;
-                    //const genreId: string = genre.rows[0].id;
                     const authorID = author.rows[0].id;
                     const genreID = genre.rows[0].id;
                     const queryString = `
@@ -220,7 +199,6 @@ const RootMutation = new graphql_1.GraphQLObjectType({
                 });
             },
         },
-        //UPDATE BOOK
         updateBook: {
             type: BookType,
             args: {
@@ -263,7 +241,6 @@ const RootMutation = new graphql_1.GraphQLObjectType({
                 });
             },
         },
-        //DELETE BOOK
         deleteBook: {
             type: BookType,
             args: {
@@ -282,7 +259,6 @@ const RootMutation = new graphql_1.GraphQLObjectType({
                 });
             },
         },
-        //ADD AUTHOR
         addAuthor: {
             type: AuthorType,
             args: {
@@ -304,7 +280,6 @@ const RootMutation = new graphql_1.GraphQLObjectType({
                 });
             },
         },
-        //UPDATE AUTHOR
         updateAuthor: {
             type: AuthorType,
             args: {
@@ -330,7 +305,6 @@ const RootMutation = new graphql_1.GraphQLObjectType({
                 });
             },
         },
-        //DELETE AUTHOR
         deleteAuthor: {
             type: AuthorType,
             args: {
@@ -348,7 +322,6 @@ const RootMutation = new graphql_1.GraphQLObjectType({
                 });
             },
         },
-        //ADD GENRE
         addGenre: {
             type: GenreType,
             args: {
@@ -366,7 +339,6 @@ const RootMutation = new graphql_1.GraphQLObjectType({
                 });
             },
         },
-        //DELETE GENRE
         deleteGenre: {
             type: GenreType,
             args: {

@@ -7,7 +7,7 @@
     "lint": "eslint . --ext .ts",
     "start": "NODE_ENV=production node ./compiledTS/server/server",
     "build": "tsc && webpack",
-    "dev": "concurrently \"cross-env NODE_ENV=development webpack serve --open --hot\" \"cross-env NODE_ENV=development nodemon server/server.ts --ignore '*.json'\"",
+    "dev": "tsc && NODE_ENV=development nodemon ./server/server.ts & webpack serve --hot",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

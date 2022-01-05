@@ -19,7 +19,6 @@ function GraphContainer({ timesArray }) {
             },
         ],
     };
-    // use ChartOptions to change the default font size to 20
     const options = {
         legend: {
             labels: {

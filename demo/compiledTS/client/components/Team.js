@@ -56,13 +56,4 @@ function Team() {
 }
 exports.default = Team;
 {
-    /* <div className='team-container-2'>
-            {teamArray.map((el, i) => (
-              <TeamMember
-                img={el.img}
-                description={el.description}
-                key={`member-${i}`}
-              />
-            ))}
-          </div> */
 }
