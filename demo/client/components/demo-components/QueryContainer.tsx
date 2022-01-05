@@ -73,7 +73,8 @@ const QueryContainer = function ({
     await fetch('/graphql', {
       method: 'POST',
       headers: {
-        'content-type': 'application/json;charset=UTF-8',
+        'content-type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
       },
       body: JSON.stringify({
         query: query,

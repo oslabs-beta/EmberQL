@@ -26,7 +26,7 @@ class EmberQL {
     next: express.NextFunction
   ) {
     this.graphQLQuery = req.body.query;
-
+    try{
     if (await this.redisCache.exists(this.graphQLQuery)) {
       const response = await this.redisCache.get(this.graphQLQuery);
       res.locals.data = JSON.parse(response);
@@ -40,7 +40,12 @@ class EmberQL {
       res.locals.data = results;
       return next();
     }
+  } catch (err: any) {
+    console.log(err);
+    next(err);
   }
+  }
+
 
   heartbeat() {
     console.log('enter heartbeat');

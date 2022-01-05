@@ -10,15 +10,14 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js',
-    publicPath: '/',
+    publicPath: '/',//this 
   },
   devServer: {
     port: 8080,
-    publicPath: '/build/',
-   
-
+    publicPath: '/build', //this 
+    //contentBase: path.join(__dirname, 'build'), //new
     proxy: {
-      '*/': 'http://localhost:3000/',
+      '*/': 'http://localhost:3000', //changed
     },
     hot: true,
     historyApiFallback: true,
@@ -44,7 +43,7 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        //exclude: /node_modules/,
+        exclude: /node_modules/,
         include: path.resolve(__dirname, 'client'),
         use: ['style-loader', 'css-loader'],
       },
@@ -64,7 +63,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'styles.css',
       chunkFilename: 'styles.css',
-     
+
     }),
   ],
 };
