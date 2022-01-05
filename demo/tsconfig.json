@@ -17,7 +17,8 @@
     "isolatedModules": true,
     //"noEmit": true,
     "resolveJsonModule": true,
+    "types": ["jest", "node"]
   },
   "exclude": ["node_modules"],
-  "include": ["client/**/*.tsx", "server/**/*.ts", "../../src/**/*.ts"],
+  "include": ["node_modules/@types", "client/**/*.tsx", "server/**/*.ts", "../../src/**/*.ts", "./__test__/*.test.ts", "./d.ts"],
 }

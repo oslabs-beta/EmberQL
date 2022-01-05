@@ -8,7 +8,7 @@
     "start": "NODE_ENV=production node server/server.ts",
     "build": "cross-env NODE_ENV=production webpack",
     "dev": "concurrently \"cross-env NODE_ENV=development webpack serve --open --hot\" \"cross-env NODE_ENV=development nodemon server/server.ts --ignore '*.json'\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --config"
   },
   "repository": {
     "type": "git",
@@ -64,7 +64,8 @@
     "react": "^17.0.2",
     "react-chartjs-2": "^4.0.0",
     "react-dom": "^17.0.2",
-    "redis": "^4.0.1"
+    "redis": "^4.0.1",
+    "ts-jest": "^27.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
@@ -73,7 +74,7 @@
     "@babel/preset-typescript": "^7.16.0",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.4",
-    "@types/jest": "^24.0.13",
+    "@types/jest": "^27.4.0",
     "@types/mocha": "^5.2.7",
     "@types/node": "^16.11.9",
     "@types/react": "^16.7.18",
@@ -94,7 +95,7 @@
     "file-loader": "^6.1.0",
     "graphiql": "^1.4.0",
     "html-webpack-plugin": "^5.5.0",
-    "jest": "^26.4.2",
+    "jest": "^27.4.5",
     "nodemon": "^2.0.4",
     "style-loader": "^1.2.1",
     "ts-loader": "^9.2.6",
