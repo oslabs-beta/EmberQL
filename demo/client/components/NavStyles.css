@@ -16,3 +16,8 @@ nav {
   display: flex;
   font-size: 2vw;
 }
+@media (max-width: 900px) {
+  .nav-el {
+    font-size: large;
+  }
+}

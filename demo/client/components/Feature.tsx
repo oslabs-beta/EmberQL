@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface FeatureProps {
-  img: string;
+  img: any;
   description: string;
 }
 

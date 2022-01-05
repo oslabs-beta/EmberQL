@@ -16,25 +16,31 @@ body {
 .demo-container {
   display: flex;
   flex-direction: row;
-  height: 100vh;
-  width: 100vw;
+  height: 99vh;
+  width: 97vw;
 }
 
 .graph-container {
   display: flex;
   flex-direction: column;
   border: 1px black solid;
-  margin: 50px;
+  margin-left: 25px;
+  margin-right: 25px;
   flex: 1;
-  padding: 50px;
+  padding: 20px;
+  margin-top: 50px;
   background-color: #082032;
+  max-width: 50%;
 }
 
 .query-container {
   display: flex;
   flex-direction: column;
   border: 1px black solid;
-  margin: 50px;
+  margin-top: 50px;
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-bottom: 50px;
   flex: 0.5;
   padding: 50px;
   background-color: #082032;
@@ -67,7 +73,7 @@ body {
 .clear-btn {
   border: none;
   color: white;
-  padding: 15px 32px;
+  /* padding: 15px 32px; */
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -77,10 +83,12 @@ body {
 
 #clear-graph {
   background-color: #2c394b;
+  border: 1px solid #ff4c29;
 }
 
 #clear-cache {
   background-color: #334756;
+  border: 1px solid #ff4c29;
 }
 
 .text-area {
@@ -92,4 +100,30 @@ body {
 
 h1 {
   color: red;
+}
+
+@media (max-width: 1200px) {
+  .demo-container {
+    flex-direction: column;
+  }
+  .graph-container {
+    max-width: 100%;
+  }
+  .text-area {
+    height: 150px;
+  }
+  #submit-query {
+    width: 230px;
+  }
+  .query-container {
+    padding: 20px;
+  }
+  .graph-container {
+    margin-top: 25px;
+  }
+}
+@media (max-width: 900px) {
+  .clear-buttons-div {
+    flex-direction: column;
+  }
 }

@@ -1,11 +1,11 @@
-.section-title {
-  font-size: 8em;
+#section-title-team {
+  font-size: 7vw;
   font-family: 'Red Hat Display', sans-serif;
   font-weight: 500;
 }
 
 .team-container {
-  background-color: #082032;
+  /* background-color: #082032;
   width: 99vw;
   height: 99vh;
   margin: 0;
@@ -14,7 +14,12 @@
   align-items: center;
   justify-content: space-evenly;
   margin-top: 25%;
-  font-family: 'Red Hat Display', sans-serif;
+  font-family: 'Red Hat Display', sans-serif; */
+  background-color: #082032;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 50px;
 }
 
 .team-1 {
@@ -40,10 +45,33 @@
 
 .member-img {
   border-radius: 50%;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
   box-shadow: 5px 7px 14px black;
+  height: 300px;
+  width: 300px;
 }
 
 .member-description {
-  font-size: xx-large;
+  font-size: large;
+}
+.team-link {
+  font-size: medium;
+  font-family: 'Red Hat Display', sans-serif;
+  color: #ff4c29;
+  text-decoration: none;
+}
+/* img {
+  height: 300px;
+  width: 300px;
+} */
+@media (max-width: 1075px) {
+  .member-description {
+    font-size: large;
+  }
+  .team-1 {
+    flex-direction: column;
+  }
+  .team-2 {
+    flex-direction: column;
+  }
 }

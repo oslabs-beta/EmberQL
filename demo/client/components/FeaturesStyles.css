@@ -28,6 +28,8 @@
 .feature-img {
   border-radius: 50%;
   box-shadow: 5px 7px 14px black;
+  height: 300px;
+  width: 300px;
   /* max-width: 100%; */
   /* width: auto;
   height: auto; */

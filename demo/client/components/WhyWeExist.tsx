@@ -1,21 +1,24 @@
 import React from 'react';
 import WhyReason from './WhyReason';
 import './WhyStyles.css';
+import BloatedA from './assets/BloatedA.png';
+import graphql from './assets/graphql.png';
+import shield from './assets/shield.png';
 
 function WhyWeExist() {
   const reasonArray = [
     {
-      img: 'http://placecorgi.com/300/300/',
+      img: graphql,
       description: `GraphQL Lacks Caching. This means users of GraphQL applications will
       experience latencies of 1000+ ms for every query to the database.`,
     },
     {
-      img: 'http://placecorgi.com/299/299/',
+      img: BloatedA,
       description: `Apollo is bloated. Installing Apollo will add over half a million
       files to your node_modules folder. This hinders performance and increases application overhead.`,
     },
     {
-      img: 'http://placecorgi.com/301/301/',
+      img: shield,
       description: `Data Safety. With standard GraphQL implementations, there is no way to identify
       database downtime in a timely manner. EmberQL implements a heartbeat feature that monitors the database
       and halts cache invalidation when downtime occurs. Users can continue to access the most important data

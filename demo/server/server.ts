@@ -11,8 +11,7 @@ app.use(cors());
 
 const redis = require('redis');
 const redisCache = redis.createClient({
-  host: '127.0.0.1',
-  port: 6379,
+  url: 'redis://emberqluser:Emberql@123@redis-18883.c270.us-east-1-3.ec2.cloud.redislabs.com:18883',
 });
 redisCache.connect();
 redisCache.on('connect', () => {
