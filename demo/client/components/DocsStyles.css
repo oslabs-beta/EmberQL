@@ -5,7 +5,7 @@
 }
 
 .link {
-  font-size: 4vw;
+  font-size: large;
   font-family: 'Red Hat Display', sans-serif;
   color: #ff4c29;
   margin-bottom: 10px;
@@ -24,4 +24,7 @@
 #docs-pic {
   width: 100%;
   height: 100%;
+}
+.html {
+  margin: 25px;
 }

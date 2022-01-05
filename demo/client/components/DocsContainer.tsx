@@ -4,25 +4,65 @@ import './DocsStyles.css';
 import pic from './assets/githubReadme.png';
 
 function DocsContainer() {
+  const text: string =
+    '# EmberQL\n\n[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/open-source-labs/Quell/blob/master/LICENSE)\n## What is EmberQL? \n\nEmberQL is an intuitive Node module that facilitates caching data from GraphQL queries, and implements a dynamic data persistence system that monitors the status of the primary database.\n## Features\n\n - Server-side caching w/ Redis to decrease query times\n- Dynamic cache invalidation\n- Data persistence system utilizing **RDB** (Redis Database) and **AOF** (Append Only File)\n\n## Installation & Prerequisites\n\n## Documentation\n\n## EmberQL Engineering Team\n\n[Cristian De Los Rios](https://github.com/Cristian-DeLosRios) |\n[Manjunath Ajjappa Pattanashetty](https://github.com/manjunathap85) |\n[Mike Masatsugu](https://github.com/mikemasatsugu) |\n[Ram Marimuthu](https://github.com/rammarimuthu) |\n[Tyler Pohn](https://github.com/tylerpohn)';
   return (
     <div className='github'>
       <h2 id='section-title'>Docs</h2>
       <a href='https://github.com/oslabs-beta/EmberQL#readme' className='link'>
-        EmberQL Github
+        Explore Our Github
       </a>
-      <div className='docs-pic-container'>
-        <img
-          id='docs-pic'
-          src={pic}
-          alt='Github Readme'
-          // height='100%'
-          // width='100%'
-        />
+      <div className='html'>
+        <h1 id='emberql'>EmberQL</h1>
+        <p>
+          <a href='https://github.com/open-source-labs/Quell/blob/master/LICENSE'>
+            <img
+              src='https://img.shields.io/badge/License-MIT-yellow.svg'
+              alt='License: MIT'
+            />
+          </a>
+        </p>
+        <br></br>
+        <h2 id='what-is-emberql-'>What is EmberQL?</h2>
+        <p>
+          EmberQL is an intuitive Node module that facilitates caching data from
+          GraphQL queries, and implements a dynamic data persistence system that
+          monitors the status of the primary database.
+        </p>
+        <br></br>
+        <h2 id='features'>Features</h2>
+        <ul>
+          <li>Server-side caching w/ Redis to decrease query times</li>
+          <li>Dynamic cache invalidation</li>
+          <li>
+            Data persistence system utilizing <strong>RDB</strong> (Redis
+            Database) and <strong>AOF</strong> (Append Only File)
+          </li>
+        </ul>
+        <br></br>
+        <h2 id='installation-prerequisites'>
+          Installation &amp; Prerequisites
+        </h2>
+        <br></br>
+        <h2 id='documentation'>Documentation</h2>
+        <br></br>
+        <h2 id='emberql-engineering-team'>EmberQL Engineering Team</h2>
+        <br></br>
+        <p>
+          <a href='https://github.com/Cristian-DeLosRios'>
+            Cristian De Los Rios
+          </a>{' '}
+          |
+          <a href='https://github.com/manjunathap85'>
+            Manjunath Ajjappa Pattanashetty
+          </a>{' '}
+          |<a href='https://github.com/mikemasatsugu'>Mike Masatsugu</a> |
+          <a href='https://github.com/rammarimuthu'>Ram Marimuthu</a> |
+          <a href='https://github.com/tylerpohn'>Tyler Pohn</a>
+        </p>
       </div>
     </div>
   );
 }
 
 export default DocsContainer;
-
-// https://newbedev.com/importing-images-in-typescript-react-cannot-find-module
