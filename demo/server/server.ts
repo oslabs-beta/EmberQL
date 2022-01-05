@@ -26,7 +26,7 @@ app.use(express.json());
 // statically serve everything in the build folder on the route '/build'
 console.log(
   'Should print MinifiedUglified build:',
-  path.resolve(__dirname, './build')
+  path.resolve(__dirname, './build'),
 );
 
 //eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -49,7 +49,7 @@ app.use('/build', express.static(path.resolve(__dirname, '../build')));
 // serve index.html on the route '/'
 //express.static is replacing the following: (because html gets bundled)
 app.get('/', (req: Request, res: Response) =>
-  res.status(200).sendFile(path.join(__dirname, '../index.html'))
+  res.status(200).sendFile(path.join(__dirname, '../index.html')),
 );
 
 app.listen(PORT); //listens on port 3000 -> http://localhost:3000/

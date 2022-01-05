@@ -18,9 +18,10 @@
     //"noEmit": true,
     "resolveJsonModule": true,
    
+   
   
   },
-  "exclude": ["node_modules"], 
+  "exclude": ["node_modules", "build"], 
   "include": ["client/**/*.tsx", "server/**/*.ts", "../../src/**/*.ts", "./d.ts", "types"],
   "typeRoots": ["../@types"],
 }

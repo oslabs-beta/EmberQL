@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+//const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: process.env.NODE_ENV,
@@ -38,6 +38,7 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-react', '@babel/preset-env'],
+           // plugins: ['@babel/plugin-transform-runtime'],
           },
         },
       },
@@ -60,10 +61,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './index.html',
     }),
-    new MiniCssExtractPlugin({
-      filename: 'styles.css',
-      chunkFilename: 'styles.css',
+    // new MiniCssExtractPlugin({
+    //   filename: 'styles.css',
+    //   chunkFilename: 'styles.css',
 
-    }),
+    // }),
   ],
 };
