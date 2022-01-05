@@ -10,18 +10,23 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js',
-    publicPath: '/',
+    //publicPath: '/',
   },
   devServer: {
     port: 8080,
-    publicPath: '/build/',
-
+    // publicPath: '/build/',
+    host: 'localhost',
+    contentBase: path.resolve(__dirname, '/compiledTS/client'),
 
     proxy: {
-      '/': 'http://localhost:3000/',
+      '/**': 'http://localhost:3000/',
     },
     hot: true,
     historyApiFallback: true,
+    watchContentBase: true,
+    watchOptions: {
+      ignored: /node_modules/,
+    },
   },
   //entry: path.resolve(__dirname, './client/index.tsx'),
   module: {
@@ -59,12 +64,12 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './index.html',
+      filename: 'index.html',
+      title: 'EmberQL',
     }),
     new MiniCssExtractPlugin({
       filename: 'styles.css',
       chunkFilename: 'styles.css',
-
     }),
   ],
 };
