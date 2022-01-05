@@ -10,14 +10,14 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js',
-    publicPath: '/',//this 
+    publicPath: '/build',//this 
   },
   devServer: {
     port: 8080,
     publicPath: '/build', //this 
     //contentBase: path.join(__dirname, 'build'), //new
     proxy: {
-      '*/': 'http://localhost:3000', //changed
+      '/': 'http://localhost:3000', //changed
     },
     hot: true,
     historyApiFallback: true,
