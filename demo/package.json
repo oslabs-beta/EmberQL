@@ -1,114 +1,114 @@
 {
-  "name": "emberql",
-  "version": "1.0.0",
-  "description": "Demo for EmberQL",
-  "main": "build/server/server.js",
-  "scripts": {
-    "lint": "eslint . --ext .ts",
-    "start": "cross-env NODE_ENV=production webpack serve --open",
-    "build": "cross-env NODE_ENV=production webpack ",
-    "dev": "concurrently \"cross-env NODE_ENV=development webpack serve --open --hot\" \"cross-env NODE_ENV=development nodemon server/server.ts --ignore '*.json'\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/oslabs-beta/EmberQL.git"
-  },
-  "keywords": [
-    "GraphQL",
-    "Redis",
-    "Cache",
-    "optimize",
-    "query"
-  ],
-  "authors": [
-    {
-      "name": "Cristian De Los Rios",
-      "url": "https://github.com/Cristian-DeLosRios"
-    },
-    {
-      "name": "Manjunath Ajjappa Pattanashetty",
-      "url": "https://github.com/manjunathap85"
-    },
-    {
-      "name": "Mike Masatsugu",
-      "url": "https://github.com/mikemasatsugu"
-    },
-    {
-      "name": "Ram Marimuthu",
-      "url": "https://github.com/rammarimuthu"
-    },
-    {
-      "name": "Tyler Pohn",
-      "url": "https://github.com/tylerpohn"
-    }
-  ],
-  "license": "MIT",
-  "dependencies": {
-    "@babel/runtime": "^7.16.3",
-    "@types/mini-css-extract-plugin": "^2.4.0",
-    "@types/redis": "^4.0.11",
-    "acorn": "^8.6.0",
-    "chart.js": "^3.6.2",
-    "concurrently": "^6.4.0",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "eslint-config-airbnb-typescript": "^16.1.0",
-    "express": "^4.17.1",
-    "express-graphql": "^0.12.0",
-    "graphiql": "^1.4.0",
-    "graphql": "^15.7.2",
-    "mini-css-extract-plugin": "^2.4.5",
-    "node-redis": "^0.1.7",
-    "pg": "^8.7.1",
-    "react": "^17.0.2",
-    "react-chartjs-2": "^4.0.0",
-    "react-dom": "^17.0.2",
-    "react-router-dom": "^6.2.1",
-    "redis": "^4.0.1"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.16.0",
-    "@babel/preset-env": "^7.16.4",
-    "@babel/preset-react": "^7.10.4",
-    "@babel/preset-typescript": "^7.16.0",
-    "@types/cors": "^2.8.12",
-    "@types/express": "^4.17.4",
-    "@types/jest": "^24.0.13",
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^16.11.9",
-    "@types/react": "^16.7.18",
-    "@types/react-dom": "^17.0.11",
-    "@types/react-router-dom": "^4.3.1",
-    "@types/webpack-env": "^1.13.9",
-    "@typescript-eslint/eslint-plugin": "^5.4.0",
-    "@typescript-eslint/parser": "^5.4.0",
-    "babel-loader": "^8.2.3",
-    "cross-env": "^7.0.3",
-    "css-loader": "^4.2.2",
-    "eslint": "^8.4.1",
-    "eslint-config-airbnb": "^19.0.2",
-    "eslint-plugin-import": "^2.25.3",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-react": "^7.27.1",
-    "eslint-plugin-react-hooks": "^4.3.0",
-    "file-loader": "^6.1.0",
-    "graphiql": "^1.4.0",
-    "html-webpack-plugin": "^5.5.0",
-    "jest": "^26.4.2",
-    "nodemon": "^2.0.4",
-    "style-loader": "^1.2.1",
-    "ts-loader": "^9.2.6",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.5.2",
-    "webpack": "^5.64.1",
-    "webpack-cli": "^4.9.1",
-    "webpack-dev-middleware": "^5.2.2",
-    "webpack-dev-server": "^3.11.2",
-    "webpack-hot-middleware": "^2.25.1"
-  },
-  "bugs": {
-    "url": "https://github.com/oslabs-beta/EmberQL/issues"
-  },
-  "homepage": "https://github.com/oslabs-beta/EmberQL#readme"
+	"name": "emberql",
+	"version": "1.0.0",
+	"description": "Demo for EmberQL",
+	"main": "build/server/server.js",
+	"scripts": {
+		"lint": "eslint . --ext .ts",
+		"start": "concurrently \"cross-env NODE_ENV=production webpack serve --open --hot\" \"cross-env NODE_ENV=production nodemon server/server.ts --ignore '*.json'\"",
+		"build": "cross-env NODE_ENV=production webpack ",
+		"dev": "concurrently \"cross-env NODE_ENV=development webpack serve --open --hot\" \"cross-env NODE_ENV=development nodemon server/server.ts --ignore '*.json'\"",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/oslabs-beta/EmberQL.git"
+	},
+	"keywords": [
+		"GraphQL",
+		"Redis",
+		"Cache",
+		"optimize",
+		"query"
+	],
+	"authors": [
+		{
+			"name": "Cristian De Los Rios",
+			"url": "https://github.com/Cristian-DeLosRios"
+		},
+		{
+			"name": "Manjunath Ajjappa Pattanashetty",
+			"url": "https://github.com/manjunathap85"
+		},
+		{
+			"name": "Mike Masatsugu",
+			"url": "https://github.com/mikemasatsugu"
+		},
+		{
+			"name": "Ram Marimuthu",
+			"url": "https://github.com/rammarimuthu"
+		},
+		{
+			"name": "Tyler Pohn",
+			"url": "https://github.com/tylerpohn"
+		}
+	],
+	"license": "MIT",
+	"dependencies": {
+		"@babel/runtime": "^7.16.3",
+		"@types/mini-css-extract-plugin": "^2.4.0",
+		"@types/redis": "^4.0.11",
+		"acorn": "^8.6.0",
+		"chart.js": "^3.6.2",
+		"concurrently": "^6.4.0",
+		"cors": "^2.8.5",
+		"dotenv": "^8.2.0",
+		"eslint-config-airbnb-typescript": "^16.1.0",
+		"express": "^4.17.1",
+		"express-graphql": "^0.12.0",
+		"graphiql": "^1.4.0",
+		"graphql": "^15.7.2",
+		"mini-css-extract-plugin": "^2.4.5",
+		"node-redis": "^0.1.7",
+		"pg": "^8.7.1",
+		"react": "^17.0.2",
+		"react-chartjs-2": "^4.0.0",
+		"react-dom": "^17.0.2",
+		"react-router-dom": "^6.2.1",
+		"redis": "^4.0.1"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.16.0",
+		"@babel/preset-env": "^7.16.4",
+		"@babel/preset-react": "^7.10.4",
+		"@babel/preset-typescript": "^7.16.0",
+		"@types/cors": "^2.8.12",
+		"@types/express": "^4.17.4",
+		"@types/jest": "^24.0.13",
+		"@types/mocha": "^5.2.7",
+		"@types/node": "^16.11.9",
+		"@types/react": "^16.7.18",
+		"@types/react-dom": "^17.0.11",
+		"@types/react-router-dom": "^4.3.1",
+		"@types/webpack-env": "^1.13.9",
+		"@typescript-eslint/eslint-plugin": "^5.4.0",
+		"@typescript-eslint/parser": "^5.4.0",
+		"babel-loader": "^8.2.3",
+		"cross-env": "^7.0.3",
+		"css-loader": "^4.2.2",
+		"eslint": "^8.4.1",
+		"eslint-config-airbnb": "^19.0.2",
+		"eslint-plugin-import": "^2.25.3",
+		"eslint-plugin-jsx-a11y": "^6.5.1",
+		"eslint-plugin-react": "^7.27.1",
+		"eslint-plugin-react-hooks": "^4.3.0",
+		"file-loader": "^6.1.0",
+		"graphiql": "^1.4.0",
+		"html-webpack-plugin": "^5.5.0",
+		"jest": "^26.4.2",
+		"nodemon": "^2.0.4",
+		"style-loader": "^1.2.1",
+		"ts-loader": "^9.2.6",
+		"ts-node": "^10.4.0",
+		"typescript": "^4.5.2",
+		"webpack": "^5.64.1",
+		"webpack-cli": "^4.9.1",
+		"webpack-dev-middleware": "^5.2.2",
+		"webpack-dev-server": "^3.11.2",
+		"webpack-hot-middleware": "^2.25.1"
+	},
+	"bugs": {
+		"url": "https://github.com/oslabs-beta/EmberQL/issues"
+	},
+	"homepage": "https://github.com/oslabs-beta/EmberQL#readme"
 }
