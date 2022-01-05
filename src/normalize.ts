@@ -29,7 +29,7 @@ export const normalizeResponse = (parsedResponse: { [x: string]: any }) => {
         if (!Array.isArray(value)) {
           //check if value is normalizable
           if (value.id && value.__typename) {
-            const normalizeKey = generateKey(value.id, value.__typename);
+            const normalizeKey = generateKey(value.__typename, value.id);
             //normalize
             refObj[normalizeKey] = helper(value);
             //add references
@@ -42,7 +42,7 @@ export const normalizeResponse = (parsedResponse: { [x: string]: any }) => {
           //check if first item is normalizable. if normalizable, all elements should be normalizable b/c array is a graphqllist
           if (value[0].id && value[0].__typename) {
             for (const obj of parsedResponse[key]) {
-              const normalizeKey = generateKey(obj.id, obj.__typename);
+              const normalizeKey = generateKey(obj.__typename, obj.id);
               //normalize
               refObj[normalizeKey] = helper(obj);
               //add references
