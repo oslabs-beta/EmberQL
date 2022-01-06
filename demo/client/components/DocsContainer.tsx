@@ -1,7 +1,6 @@
 import React from 'react';
+import { render } from 'react-dom';
 import './DocsStyles.css';
-
-import pic from './assets/githubReadme.png';
 
 function DocsContainer() {
   return (
@@ -10,8 +9,7 @@ function DocsContainer() {
       <a href='https://github.com/oslabs-beta/EmberQL#readme' className='link'>
         Explore Our Github
       </a>
-      <div className='html'>
-        <h1 id='emberql'>EmberQL</h1>
+      <div className='markdown-container'>
         <p>
           <a href='https://github.com/oslabs-beta/EmberQL/blob/dev/LICENSE'>
             <img
@@ -20,43 +18,188 @@ function DocsContainer() {
             />
           </a>
         </p>
-        <br></br>
         <h2 id='what-is-emberql-'>What is EmberQL?</h2>
+        <hr />
+        <br />
         <p>
-          EmberQL is an intuitive Node module that facilitates caching data from
-          GraphQL queries, and implements a dynamic data persistence system that
-          monitors the status of the primary database.
+          EmberQL is an intuitive, lightweight Node module that facilitates
+          caching data from GraphQL queries, and implements a dynamic data
+          persistence system that monitors the status of the primary database
+          and modifies cache invalidation accordingly.
         </p>
-        <br></br>
+        <br />
         <h2 id='features'>Features</h2>
-        <ul>
-          <li>Server-side caching w/ Redis to decrease query times</li>
-          <li>Dynamic cache invalidation</li>
-          <li>
-            Data persistence system utilizing <strong>RDB</strong> (Redis
-            Database) and <strong>AOF</strong> (Append Only File)
-          </li>
-        </ul>
-        <br></br>
+        <hr />
+        <br />
+        <h3 id='server-side-caching-with-redis-to-decrease-query-times'>
+          Server-side caching with Redis to decrease query times
+        </h3>
+        <p>
+          {' '}
+          Decrease the time it takes for your users to fetch data from your
+          database by up to one hundred fold. Research shows that even a second
+          of latency will drastically increase bounce rates on your application.
+          Additionally, depending on the specifications or hosting of your
+          database, too many simultaneous queries can cause timeouts to occur.
+          Using EmberQL, there is no need to gamble with forcing your users to
+          make redundant queries to your database.
+        </p>
+        <br />
+        <h3 id='dynamic-cache-invalidation'>Dynamic cache invalidation</h3>
+        <p>
+          {' '}
+          EmberQL incorporates a smart "heartbeat" feature that will monitor
+          your database in real time and halt cache invalidation when it detects
+          downtime. This is done by periodically increasing the time to live of
+          cached data, and as soon as the database comes back online cached
+          items will revert to being evicted normally. The heartbeat will
+          communicate relevant information about the cache and database to the
+          developer in the server console.{' '}
+        </p>
+        <br />
+        <h3 id='data-persistence-system-utilizing-rdb-redis-database-and-aof-append-only-file-'>
+          Data persistence system utilizing <strong>RDB</strong> (Redis
+          Database) and <strong>AOF</strong> (Append Only File)
+        </h3>
+        <p>
+          {' '}
+          In the event of your database going down, the most relevant
+          information users are querying will be available in the in-memory
+          database and thus available to users. With EmberQL, there is no need
+          for your clients to notice when your database isn't running. You can
+          rest assured that your application will have fault tolerance after
+          installing the module.{' '}
+        </p>
+        <br />
         <h2 id='installation-prerequisites'>
           Installation &amp; Prerequisites
         </h2>
-        <br></br>
-        <h2 id='documentation'>Documentation</h2>
-        <br></br>
-        <h2 id='emberql-engineering-team'>EmberQL Engineering Team</h2>
-        <br></br>
+        <hr />
+        <br />
         <p>
-          <a href='https://github.com/Cristian-DeLosRios'>
+          Install the EmberQL module into your Node.js application by running
+          the command npm install emberql. Your application must have GraphQL
+          and as a dependency, and you will need to define your schema so that
+          EmberQL can make use of it. You will also need Redis as a dependency
+          to access the Redis functions (createClient, connect, on, etc.) and
+          you will need to either run a Redis server on your machine locally or
+          utilize AWS Elasticache to run a Redis server.{' '}
+        </p>
+        <br />
+        <h2 id='implementation'>Implementation</h2>
+        <hr />
+        <br />
+        <p>
+          After installing, the module can be easily configured by making a few
+          small additions to your server file.{' '}
+        </p>
+        <p>
+          The EmberQL class will take your GraphQL schema and your Redis cache
+          instance as arguments:
+        </p>
+        <pre>
+          <div className='code'>
+            <code>
+              <span className='hljs-keyword'>const</span> Ember ={' '}
+              <span className='hljs-keyword'>new</span> EmberQL(schema,
+              redisCache);{'\n'}
+            </code>
+          </div>
+        </pre>
+        <p>
+          Any request sent to '/graphql' should be routed through the
+          handleQuery middleware:
+        </p>
+        <pre>
+          <div className='code'>
+            <code className='lang-javascript'>
+              app.use(<span className='hljs-string'>'/graphql'</span>,
+              Ember.handleQuery,{' '}
+              <span className='hljs-function'>
+                <span className='hljs-params'>(req, res)</span> =&gt;
+              </span>{' '}
+              {'{'}
+              {'\n'}
+              {'  '}res.status(<span className='hljs-number'>202</span>
+              ).json(res.locals.data);{'\n'}
+              {'}'});{'\n'}
+            </code>
+          </div>
+        </pre>
+        <p>
+          To clear the Redis cache, send a request to the '/clearCache' endpoint
+          and route it through the EmberQL clearCache method:
+        </p>
+        <pre>
+          <div className='code'>
+            <code className='lang-javascript'>
+              app.use(<span className='hljs-string'>'/clearCache'</span>,
+              Ember.clearCache,{' '}
+              <span className='hljs-function'>
+                <span className='hljs-params'>(req, res)</span> =&gt;
+              </span>{' '}
+              {'{'}
+              {'\n'}
+              {'  '}res.sendStatus(<span className='hljs-number'>202</span>);
+              {'\n'}
+              {'}'});{'\n'}
+            </code>
+          </div>
+        </pre>
+        <p>
+          To set up the heartbeat, simply save the heartbeat property of the new
+          EmberQL instance you just declared to a new variable. Then use the
+          setInterval method and an interval of your choice to assign the
+          frequency you would like the heartbeat to check your database:
+        </p>
+        <pre>
+          <div className='code'>
+            <code className='lang-javascript'>
+              const EmberHeartbeat = Ember.heartbeat;{'\n'}
+              {'\n'}setInterval(
+              <span className='hljs-function'>
+                <span className='hljs-params'>()</span> =&gt;
+              </span>{' '}
+              {'{'}
+              {'\n'}
+              {'  '}EmberHeartbeat();{'\n'}
+              {'}'}, <span className='hljs-number'>3000</span>);{'\n'}
+            </code>
+          </div>
+        </pre>
+        <h2 id='features-in-production'>Features in Production</h2>
+        <hr />
+        <br />
+        <p>
+          Data normalization for Redis caching is currently in our development
+          pipeline. The prototype utilizes a recursive function to parse the
+          GraphQL AST and transform queries into key value pairs leveraging
+          hashing to optimize memory.{' '}
+        </p>
+        <br />
+        <h2 id='emberql-engineering-team'>EmberQL Engineering Team</h2>
+        <hr />
+        <br />
+        <p>
+          <a href='https://github.com/Cristian-DeLosRios' className='git-link'>
             Cristian De Los Rios
           </a>{' '}
-          |
-          <a href='https://github.com/manjunathap85'>
+          |{' '}
+          <a href='https://github.com/manjunathap85' className='git-link'>
             Manjunath Ajjappa Pattanashetty
           </a>{' '}
-          |<a href='https://github.com/mikemasatsugu'>Mike Masatsugu</a> |
-          <a href='https://github.com/rammarimuthu'>Ram Marimuthu</a> |
-          <a href='https://github.com/tylerpohn'>Tyler Pohn</a>
+          |{' '}
+          <a href='https://github.com/mikemasatsugu' className='git-link'>
+            Mike Masatsugu
+          </a>{' '}
+          |{' '}
+          <a href='https://github.com/rammarimuthu' className='git-link'>
+            Ram Marimuthu
+          </a>{' '}
+          |{' '}
+          <a href='https://github.com/tylerpohn' className='git-link'>
+            Tyler Pohn
+          </a>
         </p>
       </div>
     </div>

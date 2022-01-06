@@ -1,16 +1,15 @@
 .why {
-  align-items: center;
   display: flex;
+  align-items: center;
   flex-direction: column;
+  justify-content: center;
+  padding: 10vh 10vw;
 }
-#section-title {
-  font-size: 7vw;
-  font-family: 'Red Hat Display', sans-serif;
-  font-weight: 400;
-}
+
 .reason-container {
   display: flex;
   flex-direction: column;
+  margin: 10vh 0;
 }
 .single-reason {
   align-items: center;

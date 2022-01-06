@@ -1,14 +1,9 @@
-#section-title {
-  font-size: 7vw;
-  font-family: 'Red Hat Display', sans-serif;
-  font-weight: 400;
-}
-
 .features {
   background-color: #2c394b;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 15vh 10vw;
 }
 
 .feature-container {
@@ -17,12 +12,17 @@
   align-items: center;
 }
 
+.feature-description {
+  margin: 5vh 1vw;
+}
+
 .single-feature {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   font-family: 'Red Hat Display', sans-serif;
+  padding: 5vh 3vw;
 }
 
 .feature-img {

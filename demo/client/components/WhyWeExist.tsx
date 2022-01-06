@@ -27,9 +27,8 @@ function WhyWeExist() {
   ];
 
   return (
-    <div className='Why'>
-      <h2 id='section-title'>Why We Exist</h2>
-
+    <div className='why'>
+      <h2 className='section-title'>WHY WE EXIST</h2>
       <div className='reason-container'>
         {reasonArray.map((el, i) => (
           <WhyReason

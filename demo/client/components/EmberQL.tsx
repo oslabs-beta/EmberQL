@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './EmberQLStyles.css';
+import icon from './assets/icon.png';
 
 function EmberQL() {
   return (
     <div id='EmberQL'>
-      <h1 id='Title'>EmberQL</h1>
+      <img src={icon} id='icon'></img>
       <div id='Paragraph'>
         EmberQL is an npm module made for applications that utilize GraphQL.
         When incorporating caching for GraphQL, devs are often pigeon-holed into
@@ -24,11 +25,15 @@ function EmberQL() {
       </div>
       <div id='ButtonContainer'>
         <Link to='/Demo' style={{ textDecoration: 'none' }}>
-          <button id='button1'>Demo</button>
+          <button className='button' id='button1'>
+            Demo
+          </button>
         </Link>
 
         <Link to='/Docs' style={{ textDecoration: 'none' }}>
-          <button id='button2'>Docs</button>
+          <button className='button' id='button2'>
+            Docs
+          </button>
         </Link>
       </div>
     </div>
