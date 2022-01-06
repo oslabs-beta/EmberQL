@@ -1,5 +1,8 @@
 # EmberQL
 
+<p align="center"><img src="https://raw.githubusercontent.com/oslabs-beta/EmberQL/dev/demo/client/components/assets/icon.png
+" width='400' style="margin-top: 10px; margin-bottom: -10px;"></p>
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/oslabs-beta/EmberQL/blob/dev/LICENSE)
 ## What is EmberQL?
 
