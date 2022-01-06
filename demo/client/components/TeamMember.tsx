@@ -17,10 +17,10 @@ const TeamMember = function ({
     <div className='single-member'>
       <img src={img} className='member-img' />
       <p className='member-description'>{description}</p>
-      <a href={github} className='team-link'>
+      <a href={github} className='team-link' target = "_blank">
         Github
       </a>
-      <a href={linkedin} className='team-link'>
+      <a href={linkedin} className='team-link' target = "_blank">
         Linkedin
       </a>
     </div>
