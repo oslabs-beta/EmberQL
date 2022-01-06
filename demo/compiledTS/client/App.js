@@ -18,6 +18,7 @@ function App() {
             react_1.default.createElement(react_router_dom_1.Route, { path: '/', element: react_1.default.createElement(LandingContainer_1.default, null) }),
             react_1.default.createElement(react_router_dom_1.Route, { path: '/Demo', element: react_1.default.createElement(DemoContainer_1.default, null) }),
             react_1.default.createElement(react_router_dom_1.Route, { path: '/Docs', element: react_1.default.createElement(DocsContainer_1.default, null) }),
-            react_1.default.createElement(react_router_dom_1.Route, { path: '/Team', element: react_1.default.createElement(Team_1.default, null) }))));
+            react_1.default.createElement(react_router_dom_1.Route, { path: '/Team', element: react_1.default.createElement(Team_1.default, null) }),
+            react_1.default.createElement(react_router_dom_1.Route, { path: '/*', element: react_1.default.createElement(LandingContainer_1.default, null) }))));
 }
 exports.default = App;
