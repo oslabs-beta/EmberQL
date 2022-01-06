@@ -48,7 +48,7 @@ app.use(express.static('build'));
 
 // serve index.html on the route '/'
 //express.static is replacing the following: (because html gets bundled)
-app.get('/', (req: Request, res: Response) =>
+app.get('/*', (req: Request, res: Response) =>
   res.status(200).sendFile(path.join(__dirname, '../../build/index.html'))
 );
 

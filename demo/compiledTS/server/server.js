@@ -32,6 +32,6 @@ app.use('/clearCache', Ember.clearCache, (req, res) => {
 });
 app.use('/heartbeat', (0, express_graphql_1.graphqlHTTP)({ schema: schema_1.default }));
 app.use(express_1.default.static('build'));
-app.get('/', (req, res) => res.status(200).sendFile(path_1.default.join(__dirname, '../../build/index.html')));
+app.get('/*', (req, res) => res.status(200).sendFile(path_1.default.join(__dirname, '../../build/index.html')));
 app.listen(PORT);
 console.log(`Listening on port ${PORT}...`);
