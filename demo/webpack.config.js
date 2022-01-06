@@ -66,6 +66,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       title: 'EmberQL',
+      favicon: "./client/components/assets/favicon.ico"
     }),
     new MiniCssExtractPlugin({
       filename: 'styles.css',
