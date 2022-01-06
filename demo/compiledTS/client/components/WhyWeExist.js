@@ -29,8 +29,8 @@ function WhyWeExist() {
       even before the database is up again.`,
         },
     ];
-    return (react_1.default.createElement("div", { className: 'Why' },
-        react_1.default.createElement("h2", { id: 'section-title' }, "Why We Exist"),
+    return (react_1.default.createElement("div", { className: 'why' },
+        react_1.default.createElement("h2", { className: 'section-title' }, "WHY WE EXIST"),
         react_1.default.createElement("div", { className: 'reason-container' }, reasonArray.map((el, i) => (react_1.default.createElement(WhyReason_1.default, { img: el.img, description: el.description, key: `reason-${i}`, style: i % 2 === 0
                 ? { flexDirection: 'row' }
                 : { flexDirection: 'row-reverse' } }))))));

@@ -8,7 +8,6 @@
     "start": "NODE_ENV=production node ./compiledTS/server/server",
     "build": "tsc && webpack",
     "dev": "tsc && NODE_ENV=development nodemon ./server/server.ts & webpack serve --hot",
-    "dev2": "concurrently \"cross-env NODE_ENV=development webpack serve --open --hot\" \"cross-env NODE_ENV=development nodemon server/server.ts --ignore '*.json'\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

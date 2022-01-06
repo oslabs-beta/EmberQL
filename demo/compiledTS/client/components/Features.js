@@ -25,7 +25,7 @@ function Features() {
         },
     ];
     return (react_1.default.createElement("div", { className: 'features' },
-        react_1.default.createElement("h2", { id: 'section-title' }, "FEATURES"),
+        react_1.default.createElement("h2", { className: 'section-title' }, "FEATURES"),
         react_1.default.createElement("div", { className: 'feature-container' }, featureArray.map((el, i) => (react_1.default.createElement(Feature_1.default, { img: el.img, description: el.description, key: `feature-${i}` }))))));
 }
 exports.default = Features;
