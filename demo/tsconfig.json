@@ -2,7 +2,8 @@
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
-    "outDir": "./build/",
+    "outDir": "./compiledTS",
+    "rootDir": "./",
     "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
     "module": "commonjs" /* Specify what module code is generated. */,
     "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */,
@@ -16,8 +17,14 @@
     "noImplicitAny": true,
     "isolatedModules": false,
     //"noEmit": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "removeComments": true //zip emberql.zip -r * .[^.]*
   },
-  "exclude": ["node_modules"],
-  "include": ["client/**/*.tsx", "server/**/*.ts", "../../src/**/*.ts", "./d.ts"]
+  "exclude": ["node_modules", "build", "compiledTS", "__tests__"],
+  "include": [
+    "client/**/*.tsx",
+    "server/**/*.ts",
+    "../../src/**/*.ts",
+    "./d.ts"
+  ]
 }

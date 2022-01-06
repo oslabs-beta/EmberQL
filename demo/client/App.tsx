@@ -16,6 +16,7 @@ function App() {
         <Route path='/Demo' element={<DemoContainer />} />
         <Route path='/Docs' element={<DocsContainer />} />
         <Route path='/Team' element={<Team />} />
+        <Route path='/*' element={<LandingContainer />} />
       </Routes>
     </div>
   );
