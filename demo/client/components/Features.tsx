@@ -23,7 +23,7 @@ function Features() {
 
   return (
     <div className='features'>
-      <h2 id='section-title'>FEATURES</h2>
+      <h2 className='section-title'>FEATURES</h2>
       <div className='feature-container'>
         {featureArray.map((el, i) => (
           <Feature

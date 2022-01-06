@@ -20,6 +20,12 @@ body {
   width: 97vw;
 }
 
+.section-title {
+  font-size: 5vw;
+  font-family: 'Red Hat Display', sans-serif;
+  font-weight: 400;
+}
+
 .graph-container {
   display: flex;
   flex-direction: column;
@@ -31,6 +37,8 @@ body {
   margin-top: 50px;
   background-color: #082032;
   max-width: 50%;
+  max-height: 75%;
+  margin-bottom: 5vh;
 }
 
 .query-container {

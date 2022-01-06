@@ -1,9 +1,7 @@
-#section-title {
-  font-size: 7vw;
-  font-family: 'Red Hat Display', sans-serif;
-  font-weight: 400;
-}
-
+/* Background #082032 */
+/* Blue-Gray Accent #2C394B */
+/* Gray #334756 */
+/* Ember #FF4C29 */
 .link {
   font-size: large;
   font-family: 'Red Hat Display', sans-serif;
@@ -16,15 +14,33 @@
   align-items: center;
   flex-direction: column;
 }
-.docs-pic-container {
-  width: 98%;
-  height: 98%;
-  border: 1px solid #ff4c29;
+
+.markdown-container {
+  margin: 50px;
+  background-color: #082032;
+  padding: 50px;
+  width: 95%;
 }
-#docs-pic {
-  width: 100%;
-  height: 100%;
-}
-.html {
+.code {
+  display: flex;
+  background-color: #334756;
   margin: 25px;
+  padding: 25px;
+  overflow: auto;
+  flex-wrap: wrap;
+}
+
+.git-link {
+  color: #ff4c29;
+}
+
+@media (max-width: 900px) {
+  .code {
+    display: flex;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    flex-wrap: wrap;
+  }
 }
