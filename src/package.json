@@ -1,8 +1,8 @@
 {
   "name": "emberql",
-  "version": "1.0.0",
-  "description": "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/open-source-labs/Quell/blob/master/LICENSE) ## What is EmberQL?",
-  "main": "index.js",
+  "version": "1.0.4",
+  "description": "EmberQL is an intuitive, lightweight Node module that facilitates caching data from GraphQL queries, and implements a dynamic data persistence system that monitors the status of the primary database and modifies cache invalidation accordingly.",
+  "main": "EmberQL.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,13 +10,26 @@
     "type": "git",
     "url": "git+https://github.com/oslabs-beta/EmberQL.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "GraphQL",
+    "Cache",
+    "Caching",
+    "Redis",
+    "Optimize",
+    "Query",
+    "Ember",
+    "fault",
+    "tolerance",
+    "heartbeat",
+    "database",
+    "db"
+  ],
+  "author": "Cristian De Los Rios, Manjunath Ajjappa Pattanashetty, Mike Masatsugu, Ram Marimuthu, Tyler Pohn",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/oslabs-beta/EmberQL/issues"
+    "url": "http://github.com/oslabs-beta/EmberQL/issues"
   },
-  "homepage": "https://github.com/oslabs-beta/EmberQL#readme",
+  "homepage": "http://emberql.com/",
   "dependencies": {
     "@types/express": "^4.17.13",
     "@types/graphql": "^14.5.0",
@@ -25,5 +38,6 @@
     "graphql": "^15.7.2",
     "node-fetch": "^2.6.6",
     "redis": "^4.0.1"
-  }
+  },
+  "devDependencies": {}
 }
